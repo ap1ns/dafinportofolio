@@ -35,11 +35,11 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Automated Sales & Revenue Dashboard',
         description: 'Developed an interactive dashboard using advanced Excel functions to visualize daily sales performance, track revenue trends, and monitor top-selling products. This tool simplifies complex data into actionable insights for better business decision-making.',
         tools: ['Excel'],
-        imageUrl: '.img/sales.png',
+        imageUrl: '/img/sales.png',
         aspectRatio: '16:9',
         videoUrl: '',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        link: 'FILE/Dasboard.xlsx'
+        link: '/FILE/Dasboard.xlsx'
 
       },
       {
@@ -47,20 +47,20 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Comprehensive Sales & Transaction Reporting',
         description: 'Created a structured reporting framework to manage high-volume sales records and inventory flow. Focused on data integrity and detailed documentation to ensure all transactions are accounted for and reflect real-time stock levels, supporting efficient warehouse operations and accurate record-keeping.',
         tools: ['Excel'],
-        imageUrl: '.img/laporan.png',
+        imageUrl: '/img/laporan.png',
         videoUrl: '',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        link: 'FILE/stok_barang_keluar_masuk.xlsx'
+        link: '/FILE/stok_barang_keluar_masuk.xlsx'
       },
       {
         id: 'p1c',
         title: 'Dynamic Employee Attendance System',
         description: 'Designed a systematic attendance tracker that automates data entry and simplifies reporting. This project highlights my ability to organize structured data and use logical formulas to improve administrative efficiency and accuracy.',
         tools: ['Data Analysis', 'Excel', 'SQL'],
-        imageUrl: '.img/absensi.png',
+        imageUrl: '/img/absensi.png',
         videoUrl: '',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        link: 'FILE/Absensi.xlsx'
+        link: '/FILE/Absensi.xlsx'
       }
     ]
   },
@@ -76,11 +76,11 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Comprehensive Industrial Internship Report',
         description: 'Authored a detailed professional report documenting a six-month internship at PT Mitrabhakti Inti Perdana. The project involved synthesizing field data, documenting operational workflows, and presenting technical observations in a structured format. This report reflects my ability to produce professional business documentation and communicate technical processes effectively.',
         tools: ['Data Analysis', 'Excel', 'SQL'],
-        imageUrl: 'word/word.png',
+        imageUrl: '/word/word.png',
         aspectRatio: '16:9',
         videoUrl: '',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        link: 'FILE/LaporanPKL.docx'
+        link: '/FILE/LaporanPKL.docx'
       },
 
     ]
@@ -101,7 +101,7 @@ export const SKILLS_DATA: Skill[] = [
       //   aspectRatio: '16:9',
       //   videoUrl: '',
       //   logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-      //   link: 'linkproject/photoshop/ph1/index.html'
+      //     link: '/linkproject/photoshop/ph1/index.html'
       // }
     ]
   },
@@ -131,21 +131,21 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Visual Identity & Branding: Class Generation Logo',
         description: 'Conceptualized and designed a unique visual identity for my school graduation class. This project involved creating a cohesive logo that represented the group spirit, focusing on typography, color theory, and scalable design',
         tools: ['Adobe Photoshop'],
-        imageUrl: 'photoshop/ph1.png',
+        imageUrl: '/photoshop/ph1.png',
         aspectRatio: '16:9',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        downloadUrl: 'photoshop/ph1.png',
+        downloadUrl: '/photoshop/ph1.png',
         downloadName: 'logo-design.txt'
       },
       {
         id: 'p41',
         title: 'Editorial Photo Retouching',
         description: 'Digital Engagement: Institutional Twibbon Design',
-        tools: ['Adobe Photoshop' ],
-        imageUrl: 'photoshop/ph2.jpg',
+        tools: ['Adobe Photoshop'],
+        imageUrl: '/photoshop/ph2.jpg',
         aspectRatio: '16:9',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        downloadUrl: 'photoshop/ph1.jpg',
+        downloadUrl: '/photoshop/ph1.jpg',
         downloadName: 'twibbon-design.txt'
       },
       {
@@ -153,10 +153,10 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Marketing & Promotional Poster Design',
         description: 'Created a compelling advertising poster during my school period to promote local events or products. This project sharpened my skills in layout composition, visual hierarchy, and persuasive design to effectively capture audience attention.',
         tools: ['Adobe Photoshop'],
-        imageUrl: 'photoshop/ph3.png',
+        imageUrl: '/photoshop/ph3.png',
         aspectRatio: '16:9',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        downloadUrl: 'photoshop/ph1.png',
+        downloadUrl: '/photoshop/ph1.png',
         downloadName: 'poster-design.txt'
       },
       {
@@ -164,10 +164,10 @@ export const SKILLS_DATA: Skill[] = [
         title: 'Creative Cinematic Poster Production',
         description: 'Produced a high-quality cinematic poster for a school film project. I managed the entire creative process, from photo manipulation to advanced color grading, ensuring the final design reflected the film\'s mood and narrative.',
         tools: ['Adobe Photoshop', 'Lightroom'],
-        imageUrl: 'photoshop/ph4.png',
+        imageUrl: '/photoshop/ph4.png',
         aspectRatio: '16:9',
         logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
-        downloadUrl: 'photoshop/ph1.png',
+        downloadUrl: '/photoshop/ph1.png',
         downloadName: 'cinematic-poster-design.txt'
       },
     ]
@@ -230,7 +230,7 @@ export const SKILLS_DATA: Skill[] = [
   //       description: 'Professional event recording with cinematic color grading and effects.',
   //       tools: ['CapCut', 'DaVinci Resolve', 'Camera Techniques'],
   //       imageUrl: 'https://picsum.photos/seed/video3/1280/720',
-  //       videoUrl: '.img/bg013.mp4',
+  //       videoUrl: '/img/bg013.mp4',
   //       aspectRatio: '16:9',
   //       logo: '<i class="fi fi-sr-arrow-circle-right text-black dark:text-white hover:text-white dark:hover:text-black"></i>',
   //       link: ''

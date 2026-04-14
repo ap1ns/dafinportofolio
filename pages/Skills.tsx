@@ -7,9 +7,9 @@ import Projects from '../link-project/Projects';
 import PageBackground from '../components/PageBackground';
 import { PAGE_BACKGROUNDS } from '../config/pageBackgrounds';
 
-const ANI1_IMAGE = new URL('../.img/ANI1.gif', import.meta.url).href;
-const ANI2_IMAGE = new URL('../.img/ANI2.gif', import.meta.url).href;
-const ANI3_IMAGE = new URL('../.img/ANI3.gif', import.meta.url).href;
+const ANI1_IMAGE = new URL('../img/ANI1.gif', import.meta.url).href;
+const ANI2_IMAGE = new URL('../img/ANI2.gif', import.meta.url).href;
+const ANI3_IMAGE = new URL('../img/ANI3.gif', import.meta.url).href;
 
 const ScrollControlledImage: React.FC<{
   src: string;
