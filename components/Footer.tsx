@@ -43,14 +43,14 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="py-20 px-6 border-t border-zinc-800 bg-black">
+    <footer className="py-20 px-6 bg-black relative">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
         >
           <motion.div
             className="col-span-2"
@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
               className="text-4xl font-display mb-6 uppercase text-black dark:text-white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.1 }}
             >
               PORTOFOLIO.
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
               className="text-zinc-500 dark:text-zinc-400 max-w-sm leading-relaxed"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.2 }}
             >
               Dafin Mu'tashim (
@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
               className="font-bold text-sm tracking-widest uppercase mb-6 text-black dark:text-white"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.1 }}
             >
               Quick Links
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
               {[
                 { href: '#home', label: 'Home' },
@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
               className="font-bold text-sm tracking-widest uppercase mb-6 text-black dark:text-white"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: 0.1 }}
             >
               Follow Me
@@ -132,7 +132,7 @@ const Footer: React.FC = () => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
               {[
                 { href: 'https://www.instagram.com/_apins2/', label: 'Instagram' },
@@ -165,7 +165,7 @@ const Footer: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <motion.p variants={itemVariants} transition={{ duration: 0.6, ease: 'easeOut' }}>
             © {currentYear}{' '}
@@ -189,7 +189,7 @@ const Footer: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
           >
             <motion.a
               href="#"

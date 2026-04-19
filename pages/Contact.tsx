@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, MessageSquare, Instagram, Music2, Linkedin, Youtube } from 'lucide-react';
 import emailjs from 'emailjs-com';
@@ -35,7 +35,6 @@ const Contact: React.FC = () => {
   const [cooldownTime, setCooldownTime] = useState(0);
   const [lastBatchTime, setLastBatchTime] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   const MESSAGE_LIMIT = 10;
   const COOLDOWN_DURATION = 120; // 2 minutes in seconds
@@ -64,17 +63,7 @@ const Contact: React.FC = () => {
     }
   }, []);
 
-  // Mobile detection
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Save to localStorage whenever messageCount or lastBatchTime changes
+  // Load rate limit data from localStorage
   React.useEffect(() => {
     if (messageCount > 0 || lastBatchTime > 0) {
       localStorage.setItem(
@@ -264,10 +253,8 @@ const Contact: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: false, margin: '-100px' }}
             style={{
-              y: isMobile ? 0 : leftY,
-              rotate: isMobile ? 0 : leftRotate,
               scale: contentScale,
             }}
           >
@@ -301,7 +288,7 @@ const Contact: React.FC = () => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
               <motion.div
                 variants={itemVariants}
@@ -349,7 +336,7 @@ const Contact: React.FC = () => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                   >
                     {socialLinks.map((social, i) => (
                       <motion.a
@@ -373,174 +360,15 @@ const Contact: React.FC = () => {
           </motion.div>
 
           <motion.div
-            className="relative rounded-2xl sm:rounded-[3rem] w-full max-w-full sm:max-w-[38rem] mx-auto min-h-[600px] sm:min-h-[650px] md:min-h-[650px] lg:min-h-[600px]"
+            className="relative rounded-2xl sm:rounded-[3rem] w-full max-w-full sm:max-w-[38rem] mx-auto"
             style={{
-              perspective: isMobile ? 'none' : '2000px',
-              y: isMobile ? 0 : rightY,
-              rotate: isMobile ? 0 : rightRotate,
+              perspective: '2000px',
               scale: contentScale,
             }}
           >
-            {isMobile ? (
-              // Mobile: Show form directly without flip animation
+              {/* 3D Flip Card */}
               <motion.div
-                className="w-full rounded-2xl sm:rounded-[3rem] overflow-hidden border border-white/10 bg-black shadow-2xl backdrop-blur-xl"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-100px' }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                <div className="relative z-10 w-full flex flex-col p-5 md:p-8 min-h-[600px]">
-                  {submitStatus === 'success' ? (
-                    // Success Message
-                    <div className="relative overflow-hidden w-full min-h-[600px] rounded-[2rem] flex items-center justify-center">
-                      <img
-                        src="https://i.pinimg.com/originals/df/ee/6e/dfee6e7841913e2b6ecbe9384538b9e6.gif"
-                        alt="Success background"
-                        className="pointer-events-none absolute inset-0 w-full h-full object-cover opacity-30"
-                      />
-                      <div className="relative z-10 flex flex-col items-center justify-center px-6 text-center">
-                        <motion.h3
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.2, duration: 0.6 }}
-                          className="text-2xl md:text-3xl font-bold text-white mb-4"
-                        >
-                          Message Sent
-                        </motion.h3>
-                        <motion.p
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4, duration: 0.6 }}
-                          className="text-white/70 mb-8"
-                        >
-                          Thank you for reaching out! I'll get back to you within 24 hours.
-                        </motion.p>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="w-full flex flex-col flex-1">
-                        <div className="mb-10 px-1 md:px-0">
-                          <motion.p
-                            className="text-xs sm:text-sm md:text-base uppercase tracking-[0.3em] text-white/60 mb-5"
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.6 }}
-                          >
-                            Contact form
-                          </motion.p>
-                          <motion.h2
-                            className="text-lg sm:text-xl md:text-2xl lg:text-4xl font-semibold text-white leading-tight"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.35, duration: 0.6 }}
-                          >
-                            Tell me about your project.
-                          </motion.h2>
-                        </div>
-                        <form className="space-y-6 flex flex-col" onSubmit={handleSubmit}>
-                          <div className="grid gap-5 md:grid-cols-2">
-                            <div>
-                              <label className="block text-[13px] font-medium text-white/80 mb-2">
-                                Name *
-                              </label>
-                              <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                placeholder="Your full name"
-                                required
-                                className="w-full px-4 py-3 bg-black border border-white/20 rounded-2xl backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/70 text-white placeholder-white/50 text-sm"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-[13px] font-medium text-white/80 mb-2">
-                                Email *
-                              </label>
-                              <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder="your.email@example.com"
-                                required
-                                className="w-full px-4 py-3 bg-black border border-white/20 rounded-2xl backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/70 text-white placeholder-white/50 text-sm"
-                              />
-                            </div>
-                          </div>
-                          <div className="mt-5">
-                            <label className="block text-[13px] font-medium text-white/80 mb-2">
-                              Subject *
-                            </label>
-                            <input
-                              type="text"
-                              name="subject"
-                              value={formData.subject}
-                              onChange={handleInputChange}
-                              placeholder="What do you want to build?"
-                              required
-                              className="w-full px-4 py-3 bg-black border border-white/20 rounded-2xl backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/70 text-white placeholder-white/50 text-sm"
-                            />
-                          </div>
-                          <div className="mt-5">
-                            <label className="block text-[13px] font-medium text-white/80 mb-2">
-                              Message *
-                            </label>
-                            <textarea
-                              rows={5}
-                              name="message"
-                              value={formData.message}
-                              onChange={handleInputChange}
-                              placeholder="Tell me about your project or just say hello..."
-                              required
-                              className="w-full px-4 py-3 bg-black border-2 border-white/20 rounded-2xl backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/70 text-white placeholder-white/50 resize-none text-sm shadow-lg"
-                            />
-                          </div>
-                          <input
-                            type="text"
-                            name="website"
-                            value={honeypot}
-                            onChange={(e) => setHoneypot(e.target.value)}
-                            style={{ display: 'none' }}
-                            autoComplete="off"
-                          />
-                          {submitStatus === 'error' && (
-                            <div className="p-4 bg-red-500/10 border border-red-400/20 rounded-2xl text-red-200 text-sm">
-                              Failed to send message. Please try again.
-                            </div>
-                          )}
-                          {submitStatus === 'cooldown' && (
-                            <div className="p-4 bg-amber-500/10 border border-amber-400/20 rounded-2xl text-amber-100 text-sm">
-                              You've sent 10 messages. Please wait {cooldownTime}s before sending
-                              more.
-                            </div>
-                          )}
-                          <div className="text-center text-[11px] text-white/40 mb-4">
-                            Your message will be sent to my email.
-                          </div>
-                          <button
-                            type="submit"
-                            disabled={isLoading || submitStatus === 'cooldown'}
-                            className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-white/90 hover:text-black active:bg-white/95 active:text-black active:scale-95 transition duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed text-sm backdrop-blur-sm border border-white/20 shadow-sm hover:shadow-md"
-                          >
-                            {isLoading
-                              ? 'Sending...'
-                              : submitStatus === 'cooldown'
-                                ? `Wait ${cooldownTime}s`
-                                : 'Send Message'}
-                          </button>
-                        </form>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </motion.div>
-            ) : (
-              // Desktop: 3D Flip Card
-              <motion.div
-                className="w-full h-full relative preserve-3d"
+                className="w-full relative preserve-3d grid"
                 animate={{
                   rotateY: isFlipped ? 180 : 0,
                   scale: isFlipped ? 1.02 : 1,
@@ -585,7 +413,7 @@ const Contact: React.FC = () => {
                 </motion.div>
                 {/* Front Side - Beautiful Display Card */}
                 <motion.div
-                  className="absolute w-full h-full rounded-2xl sm:rounded-[3rem] border border-white/10 overflow-hidden bg-black shadow-2xl"
+                  className="[grid-area:1/1] w-full h-full rounded-2xl sm:rounded-[3rem] border border-white overflow-hidden bg-black/80 shadow-[0_0_50px_rgba(255,255,255,0.05)] backdrop-blur-3xl"
                   style={{
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
@@ -594,7 +422,7 @@ const Contact: React.FC = () => {
                   }}
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: '-100px' }}
+                  viewport={{ once: false, margin: '-100px' }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   whileHover={{
                     scale: 1.02,
@@ -621,7 +449,7 @@ const Contact: React.FC = () => {
                         <motion.h2
                           initial={{ opacity: 0, y: 30 }}
                           whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
+                          viewport={{ once: false }}
                           transition={{ delay: 0.2, duration: 0.8, type: 'spring', stiffness: 120 }}
                           className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold text-white leading-tight"
                         >
@@ -631,7 +459,7 @@ const Contact: React.FC = () => {
                         <motion.p
                           initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
+                          viewport={{ once: false }}
                           transition={{ delay: 0.35, duration: 0.7 }}
                           className="max-w-xl text-xs sm:text-sm md:text-base text-white leading-relaxed"
                         >
@@ -642,15 +470,13 @@ const Contact: React.FC = () => {
 
                       <div className="mt-8 flex flex-col gap-6">
                         <motion.button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setIsFlipped(true);
-                            if (navigator.vibrate) {
-                              navigator.vibrate(50);
-                            }
                           }}
                           initial={{ opacity: 0, y: 30, scale: 0.95 }}
                           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                          viewport={{ once: true }}
+                          viewport={{ once: false }}
                           transition={{
                             delay: 0.55,
                             duration: 0.6,
@@ -658,21 +484,18 @@ const Contact: React.FC = () => {
                             stiffness: 120,
                           }}
                           whileHover={{
-                            scale: 1.03,
-                            boxShadow: '0 18px 45px rgba(255,255,255,0.22)',
-                            backgroundColor: 'rgba(255,255,255,0.95)',
+                            scale: 1.02,
+                            backgroundColor: 'rgba(255,255,255,1)',
                             color: '#000',
+                            boxShadow: '0 8px 30px rgba(255,255,255,0.3)',
                           }}
                           whileTap={{
                             scale: 0.97,
-                            boxShadow: '0 12px 32px rgba(255,255,255,0.18)',
-                            backgroundColor: 'rgba(255,255,255,0.95)',
-                            color: '#000',
                           }}
-                          className="relative inline-flex items-center justify-center w-full rounded-3xl border border-white/20 bg-black px-10 py-4 text-white text-base font-semibold shadow-lg backdrop-blur-sm transition duration-300"
+                          className="relative inline-flex items-center justify-center w-full rounded-[2rem] border border-white/30 bg-white/10 px-10 py-4 text-white text-sm tracking-wider uppercase font-bold shadow-[0_4px_14px_0_rgba(255,255,255,0.1)] backdrop-blur-md transition-colors duration-300"
                         >
-                          Send a message
-                        </motion.button>
+                            Send a message
+                          </motion.button>
 
                         <div className="flex flex-col gap-1 text-sm text-white/60 md:flex-row md:items-center md:justify-between">
                           <span>Apins.id</span>
@@ -683,7 +506,7 @@ const Contact: React.FC = () => {
                   </div>
                 </motion.div>
                 <motion.div
-                  className="absolute inset-0 rounded-2xl sm:rounded-[3rem] overflow-hidden border border-white/10 bg-black shadow-2xl backdrop-blur-xl"
+                  className="[grid-area:1/1] w-full h-full rounded-2xl sm:rounded-[3rem] overflow-hidden border border-white bg-black/80 shadow-[0_0_50px_rgba(255,255,255,0.05)] backdrop-blur-3xl"
                   style={{
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
@@ -824,7 +647,7 @@ const Contact: React.FC = () => {
                             <button
                               type="submit"
                               disabled={isLoading || submitStatus === 'cooldown'}
-                              className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-white/90 hover:text-black active:bg-white/95 active:text-black active:scale-95 transition duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed text-sm backdrop-blur-sm border border-white/20 shadow-sm hover:shadow-md"
+                              className="w-full py-4 bg-white/10 text-white rounded-[2rem] font-bold tracking-wider uppercase hover:bg-white hover:text-black active:scale-95 transition-all duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed text-sm backdrop-blur-md border border-white/30 shadow-[0_4px_14px_0_rgba(255,255,255,0.1)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)]"
                             >
                               {isLoading
                                 ? 'Sending...'
@@ -839,9 +662,31 @@ const Contact: React.FC = () => {
                   </div>
                 </motion.div>
               </motion.div>
-            )}
           </motion.div>
         </div>
+
+        {/* Quote Section */}
+        <motion.div
+          className="w-full flex flex-col items-center justify-center text-center mt-32 mb-10 py-16 md:py-24 px-4 relative overflow-hidden border-t border-zinc-200 dark:border-zinc-800"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '-50px' }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-blue-500/10 blur-[100px] pointer-events-none rounded-full" />
+          <motion.span
+            className="text-xs font-black tracking-[0.4em] text-zinc-500 uppercase mb-8"
+            initial={{ opacity: 0, letterSpacing: '0em' }}
+            whileInView={{ opacity: 1, letterSpacing: '0.4em' }}
+            viewport={{ once: false }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+          >
+            Closing Thoughts
+          </motion.span>
+          <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-inter text-black dark:text-white max-w-4xl leading-[1.2] tracking-tight relative z-10 font-medium">
+            "Turning complex operations into <span className="italic text-zinc-400 font-light">seamless</span> experiences."
+          </h3>
+        </motion.div>
       </div>
     </motion.div>
   );

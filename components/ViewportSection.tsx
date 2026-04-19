@@ -27,7 +27,7 @@ const ViewportSection: React.FC<ViewportSectionProps> = ({
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.85, 1], [0, 1, 1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.85, 1], [1, 1, 1, 0.9]);
 
   useEffect(() => {
     const node = containerRef.current;

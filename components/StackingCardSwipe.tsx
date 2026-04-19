@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCards, Mousewheel, Keyboard } from 'swiper/modules';
+import { EffectCards, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 
@@ -106,37 +106,46 @@ const StackingCardSwipe: React.FC = () => {
             slidesPerView={1}
             mousewheel={true}
             keyboard={{ enabled: true, onlyInViewport: true }}
-            modules={[EffectCards, Mousewheel, Keyboard]}
-            className="mySwiper"
+            modules={[EffectCards, Mousewheel, Keyboard, Autoplay]}
+            observer={true}
+            observeParents={true}
+            observeSlideChildren={true}
+            speed={600}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            className="mySwiper !px-4"
             cardsEffect={{
               slideShadows: true,
               rotate: true,
-              perSlideRotate: 1.2,
-              perSlideOffset: 4,
+              perSlideRotate: 3,
+              perSlideOffset: 12,
             }}
             breakpoints={{
               640: {
                 cardsEffect: {
                   slideShadows: true,
                   rotate: true,
-                  perSlideRotate: 1.5,
-                  perSlideOffset: 5,
+                  perSlideRotate: 2.5,
+                  perSlideOffset: 10,
                 },
               },
               768: {
                 cardsEffect: {
                   slideShadows: true,
                   rotate: true,
-                  perSlideRotate: 1.8,
-                  perSlideOffset: 6,
+                  perSlideRotate: 2.2,
+                  perSlideOffset: 9,
                 },
               },
               1024: {
                 cardsEffect: {
                   slideShadows: true,
                   rotate: true,
-                  perSlideRotate: 2.2,
-                  perSlideOffset: 7,
+                  perSlideRotate: 2,
+                  perSlideOffset: 8,
                 },
               },
             }}

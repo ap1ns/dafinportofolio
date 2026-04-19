@@ -134,7 +134,7 @@ const Experience: React.FC = () => {
           className="mb-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
           style={{ y: headerY, rotate: headerRotate, scale: contentScale }}
         >
@@ -165,7 +165,7 @@ const Experience: React.FC = () => {
           className="space-y-3"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.5, staggerChildren: 0.1 }}
           style={{ y: blocksY, scale: contentScale }}
         >
@@ -200,7 +200,7 @@ const Experience: React.FC = () => {
           className="mt-28 pt-20 border-t border-white/10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.8, delay: 0.3 }}
           style={{ y: ctaY }}
         >
@@ -217,7 +217,7 @@ const Experience: React.FC = () => {
                 className="text-4xl md:text-5xl font-grotesk font-bold text-white mb-4"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6 }}
               >
                 Let's Create Something Remarkable
@@ -227,7 +227,7 @@ const Experience: React.FC = () => {
                 className="text-lg text-white/70 mb-10 max-w-xl mx-auto leading-relaxed"
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
                 Whether you are looking for organized inventory management, precise data

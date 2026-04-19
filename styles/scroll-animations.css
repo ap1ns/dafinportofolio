@@ -66,8 +66,8 @@
 
 /* Reveal animation for IntersectionObserver-based reveal */
 .reveal {
-    opacity: 0;
-    transform: translateY(60px);
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.92s ease-out var(--reveal-delay, 0s), transform 0.92s ease-out var(--reveal-delay, 0s);
     will-change: opacity, transform;
 }
@@ -128,9 +128,9 @@
 }
 
 .viewport-hidden {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(24px);
-    pointer-events: none;
+    pointer-events: auto;
     transition: opacity 0.45s ease, transform 0.45s ease;
 }
 

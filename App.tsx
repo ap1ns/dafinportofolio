@@ -7,7 +7,7 @@ import React, {
   lazy,
   useRef,
 } from 'react';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
 import { EasterEggProvider } from './context/EasterEggContext';
@@ -144,6 +144,46 @@ const MainLayout = () => (
   </PageWrapper>
 );
 
+interface AppContentProps {
+  loadingComplete: boolean;
+  openPlaylist: () => void;
+}
+
+const AppContent: React.FC<AppContentProps> = React.memo(({ loadingComplete, openPlaylist }) => {
+  return (
+    <>
+      {loadingComplete && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Navbar onOpenPlaylist={openPlaylist} />
+        </motion.div>
+      )}
+      {loadingComplete && (
+        <motion.main
+          className="flex-grow relative z-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <MainLayout />
+        </motion.main>
+      )}
+      {loadingComplete && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        >
+          <Footer />
+        </motion.div>
+      )}
+    </>
+  );
+});
+
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingComplete, setLoadingComplete] = useState(false);
@@ -224,7 +264,7 @@ const App: React.FC = () => {
   }, [isTrackListOpen]);
 
   const openPlaylist = useCallback(() => {
-    setIsPlayerOpen(true);
+    setIsPlayerOpen(false); // Make sure mini player is collapsed when playlist is open
     setIsTrackListOpen(true);
 
     if (openPlaylistTimeoutRef.current) {
@@ -261,47 +301,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const AppContent: React.FC = () => {
-    const location = useLocation();
 
-    return (
-      <>
-        {/* Navbar with delayed entrance */}
-        {loadingComplete && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Navbar onOpenPlaylist={openPlaylist} />
-          </motion.div>
-        )}
-
-        {/* Main Content */}
-        {loadingComplete && (
-          <motion.main
-            className="flex-grow relative z-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <MainLayout />
-          </motion.main>
-        )}
-
-        {/* Footer with delayed entrance */}
-        {loadingComplete && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          >
-            <Footer />
-          </motion.div>
-        )}
-      </>
-    );
-  };
 
   return (
     <ThemeProvider>
@@ -360,7 +360,7 @@ const App: React.FC = () => {
                   />
                 </div>
 
-                <AppContent />
+                <AppContent loadingComplete={loadingComplete} openPlaylist={openPlaylist} />
 
                 {/* Easter Egg Component */}
                 <EasterEgg />

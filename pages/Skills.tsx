@@ -80,11 +80,18 @@ const Skills: React.FC = () => {
   return (
     <motion.div ref={containerRef} className={`relative overflow-hidden bg-black py-12 md:py-20 px-4 md:px-6 min-h-screen transition-opacity duration-300`} style={{ opacity: sectionOpacity, transition: 'opacity 0.3s ease-out' }}>
       <PageBackground url={backgroundUrl} />
-      <FloatingStars />
+      {/* Background only, particles removed */}
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
-        <motion.div className="mb-10 md:mb-14 grid grid-cols-1 lg:grid-cols-[1.35fr_0.9fr] gap-8 items-start" style={{ y: headerY }}>
+        <motion.div
+          className="mb-10 md:mb-14 grid grid-cols-1 lg:grid-cols-[1.35fr_0.9fr] gap-8 items-start"
+          style={{ y: headerY }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '-50px' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
           {/* Text Content */}
           <div>
             <div className="flex items-center gap-3 mb-4 md:mb-5 text-zinc-500">
@@ -165,9 +172,15 @@ const Skills: React.FC = () => {
         {/* <Projects showHeader={false} activeSkillId={activeSkillId} onSkillChange={setActiveSkillId} /> */}
 
         {/* Cards for smaller screens - below Projects */}
-        <div className="lg:hidden flex justify-center mt-16 md:mt-24">
+        <motion.div
+          className="lg:hidden flex justify-center mt-16 md:mt-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '-50px' }}
+          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+        >
           <StackingCardSwipe />
-        </div>
+        </motion.div>
       </div>
 
       <style>{`

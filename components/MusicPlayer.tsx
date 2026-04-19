@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { AudioTrack } from '../audioTracks';
 
@@ -33,10 +33,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 }) => {
   const currentTrack = tracks[currentTrackIndex];
   const [volume, setVolume] = useState(0.5);
-  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [showBriefly, setShowBriefly] = useState(false);
+  const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
+  const currentTimeRef = useRef(0);
+  const seekInputRef = useRef<HTMLInputElement>(null);
+  const timeDisplayRef = useRef<HTMLSpanElement>(null);
 
   // Format time in MM:SS format
   const formatTime = (time: number): string => {
@@ -83,14 +86,27 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   };
 
+  const updateTimeDOM = useCallback((time: number, dur?: number) => {
+    const d = dur || audioRef.current?.duration || 100;
+    if (timeDisplayRef.current) {
+      timeDisplayRef.current.textContent = formatTime(time);
+    }
+    if (seekInputRef.current) {
+      seekInputRef.current.value = String(time);
+      const pct = (time / d) * 100;
+      seekInputRef.current.style.background = `linear-gradient(to right, #22c55e 0%, #22c55e ${pct}%, rgba(255,255,255,0.2) ${pct}%, rgba(255,255,255,0.2) 100%)`;
+    }
+  }, []);
+
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const seekTime = parseFloat(e.target.value);
-    setCurrentTime(seekTime);
+    currentTimeRef.current = seekTime;
 
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = seekTime;
     }
+    updateTimeDOM(seekTime);
   };
 
   const skipToPrevious = () => {
@@ -161,7 +177,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     };
 
     const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
+      currentTimeRef.current = audio.currentTime;
+      updateTimeDOM(audio.currentTime, audio.duration);
     };
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
@@ -194,19 +211,55 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, [soundEnabled, isMuted, volume]);
 
   useEffect(() => {
+    // Briefly show title when track changes
+    setShowBriefly(true);
 
-    if (!isPlayerOpen) {
-      setIsPlayerOpen(true);
+    const timer = setTimeout(() => {
+      setShowBriefly(false);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [currentTrackIndex]);
+
+  // Handle mobile hardware back button when playlist is open
+  useEffect(() => {
+    if (!isTrackListOpen) return;
+
+    // Push a fake history entry so back button doesn't leave the page
+    window.history.pushState({ playlistOpen: true }, '');
+
+    const handlePopState = () => {
+      setIsTrackListOpen(false);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+    };
+  }, [isTrackListOpen]);
+
+  // Track if music has ever been played so mini-player stays visible
+  useEffect(() => {
+    if (soundEnabled) {
+      setHasStartedPlaying(true);
+    }
+  }, [soundEnabled]);
+
+  // Briefly expand mini-player when playlist closes
+  const prevTrackListOpenRef = useRef(isTrackListOpen);
+  useEffect(() => {
+    if (prevTrackListOpenRef.current === true && isTrackListOpen === false) {
       setShowBriefly(true);
-
       const timer = setTimeout(() => {
-        setIsPlayerOpen(false);
         setShowBriefly(false);
       }, 4000);
-
       return () => clearTimeout(timer);
     }
-  }, [currentTrackIndex]);
+    prevTrackListOpenRef.current = isTrackListOpen;
+  }, [isTrackListOpen]);
+
+  const isExpanded = (isPlayerOpen || showBriefly) && !isTrackListOpen;
+
   if (!currentTrack) return null;
 
   return (
@@ -232,124 +285,148 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
                 }
             `}</style>
-      {console.log('MusicPlayer rendering, isTrackListOpen:', isTrackListOpen)}
-      <motion.div
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed bottom-4 left-4 z-40 pointer-events-none"
-      >
+      <AnimatePresence>
+      {hasStartedPlaying && (
         <motion.div
-          ref={playerBarRef}
-          onClick={() => setIsPlayerOpen((prev) => !prev)}
-          initial={false}
-          animate={{
-            padding: '8px 12px',
-            backgroundColor: isPlayerOpen ? 'rgba(255,255,255,0.12)' : 'transparent',
-            boxShadow: isPlayerOpen ? '0 18px 45px rgba(0,0,0,0.45)' : 'none',
-            borderRadius: isPlayerOpen ? 999 : 8,
-            borderWidth: isPlayerOpen ? 1 : 0,
-            borderColor: isPlayerOpen ? 'rgba(255,255,255,0.18)' : 'transparent',
-          }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="flex items-center gap-3 pointer-events-auto bg-white/10 border border-white/10 backdrop-blur-md rounded-3xl"
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed bottom-4 left-4 z-40 pointer-events-none"
         >
-          {currentTrack.cover && (
-            <motion.img
-              src={currentTrack.cover}
-              alt={currentTrack.title}
-              className="w-10 h-10 rounded-full object-cover cursor-pointer"
-              initial={false}
-              style={{ transformOrigin: 'center center' }}
-            />
-          )}
-
-          <AnimatePresence>
-            {isPlayerOpen && (
-              <motion.div
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col ml-1 md:ml-2 cursor-pointer max-w-xs"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsTrackListOpen(true);
-                }}
-              >
-                <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400">
-                  Now Playing
-                </span>
-                <span className="text-sm font-semibold text-white leading-tight truncate hover:text-zinc-200 transition-colors">
-                  {currentTrack.title}
-                  {currentTrack.artist && (
-                    <span className="text-[11px] font-normal text-zinc-400 ml-1">
-                      · {currentTrack.artist}
-                    </span>
-                  )}
-                </span>
-              </motion.div>
+          <motion.div
+            ref={playerBarRef}
+            onClick={() => setIsPlayerOpen((prev) => !prev)}
+            layout
+            initial={false}
+            animate={{
+              backgroundColor: isExpanded
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(255, 255, 255, 0)',
+              borderColor: isExpanded
+                ? 'rgba(255, 255, 255, 0.2)'
+                : 'rgba(255, 255, 255, 0)',
+              padding: isExpanded ? 12 : 8,
+              boxShadow: isExpanded
+                ? '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2)'
+                : '0 0 0 0 rgba(0, 0, 0, 0)',
+            }}
+            transition={{
+              layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+              backgroundColor: { duration: 0.35 },
+              borderColor: { duration: 0.35 },
+              padding: { duration: 0.35 },
+              boxShadow: { duration: 0.35 },
+            }}
+            className="flex items-center gap-3 pointer-events-auto backdrop-blur-md rounded-full border cursor-pointer"
+          >
+            {currentTrack.cover && (
+              <motion.img
+                layout
+                src={currentTrack.cover}
+                alt={currentTrack.title}
+                className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                initial={false}
+                transition={{ layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } }}
+                style={{ transformOrigin: 'center center' }}
+              />
             )}
-          </AnimatePresence>
 
-          <AnimatePresence>
-            {isPlayerOpen && (
-              <motion.div
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 8 }}
-                transition={{ duration: 0.35 }}
-                className="items-center gap-2 ml-2 flex"
-              >
-                <button
-                  type="button"
+            <AnimatePresence mode="wait">
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, width: 0, x: -12 }}
+                  animate={{ opacity: 1, width: 'auto', x: 0 }}
+                  exit={{ opacity: 0, width: 0, x: -12 }}
+                  transition={{
+                    opacity: { duration: 0.25, ease: 'easeOut' },
+                    width: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
+                    x: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
+                  }}
+                  className="flex flex-col ml-1 md:ml-2 cursor-pointer max-w-xs overflow-hidden"
                   onClick={(e) => {
                     e.stopPropagation();
-                    skipToPrevious();
+                    setIsTrackListOpen(true);
                   }}
-                  className="px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] text-zinc-200 font-medium uppercase tracking-wide transition-colors"
-                  title="Previous track"
                 >
-                  ⏮
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleSound();
+                  <span className="text-[10px] uppercase tracking-[0.18em] text-zinc-400 whitespace-nowrap">
+                    Now Playing
+                  </span>
+                  <span className="text-sm font-semibold text-white leading-tight truncate hover:text-zinc-200 transition-colors max-w-[120px] md:max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                    {currentTrack.title}
+                    {currentTrack.artist && (
+                      <span className="text-[11px] font-normal text-zinc-400 ml-1">
+                        · {currentTrack.artist}
+                      </span>
+                    )}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, width: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, width: 'auto', scale: 1 }}
+                  exit={{ opacity: 0, width: 0, scale: 0.8 }}
+                  transition={{
+                    opacity: { duration: 0.2, ease: 'easeOut' },
+                    width: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
+                    scale: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] },
                   }}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center justify-center"
-                  title={soundEnabled ? 'Pause' : 'Play'}
+                  className="items-center gap-2 ml-2 flex overflow-hidden"
                 >
-                  {soundEnabled ? (
-                    /* Ikon Pause */
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                    </svg>
-                  ) : (
-                    /* Ikon Play */
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    skipToNext();
-                  }}
-                  className="px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] text-zinc-200 font-medium uppercase tracking-wide transition-colors"
-                  title="Next track"
-                >
-                  ⏭
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      skipToPrevious();
+                    }}
+                    className="px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] text-zinc-200 font-medium uppercase tracking-wide transition-colors"
+                    title="Previous track"
+                  >
+                    ⏮
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSound();
+                    }}
+                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center justify-center"
+                    title={soundEnabled ? 'Pause' : 'Play'}
+                  >
+                    {soundEnabled ? (
+                      /* Ikon Pause */
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                      </svg>
+                    ) : (
+                      /* Ikon Play */
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      skipToNext();
+                    }}
+                    className="px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] text-zinc-200 font-medium uppercase tracking-wide transition-colors"
+                    title="Next track"
+                  >
+                    ⏭
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
-      </motion.div>
-
+      )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {isTrackListOpen && (
@@ -359,7 +436,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setIsTrackListOpen(false)}
-            className="fixed inset-0 z-[100] bg-black/10 flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-transparent flex items-center justify-center"
           >
             <motion.div
               ref={trackListRef}
@@ -368,7 +445,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-[95vw] max-w-6xl h-[95vh] max-h-[90vh] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black rounded-xl shadow-2xl overflow-hidden flex flex-col ring-1 ring-white/10"
+              className="w-full max-w-[96vw] max-h-[92vh] bg-gradient-to-br from-zinc-950 via-zinc-900 to-black rounded-xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header Section with Album Art */}
               <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-b from-zinc-800 to-zinc-900 p-5 sm:p-7 flex flex-row flex-wrap items-center justify-start gap-3 sm:gap-5 md:gap-8">
@@ -380,9 +457,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     setIsTrackListOpen(false);
                   }}
                   aria-label="Close playlist"
-                  className="group absolute top-10 sm:top-5 right-3 sm:right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-all duration-300"
+                  className="group absolute top-3 right-3 sm:top-5 sm:right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-all duration-300"
                 >
-                  <img src="icons/back.png" alt="Close" className="w-5 h-5" />
+                  <i class="fi fi-sr-left"></i>
                 </a>
 
                 {/* Background Gradient Effect */}
@@ -562,18 +639,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 {/* Seek Bar */}
                 <div className="mb-3 sm:mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-zinc-400">{formatTime(currentTime)}</span>
+                    <span ref={timeDisplayRef} className="text-xs text-zinc-400">{formatTime(currentTimeRef.current)}</span>
                     <span className="text-xs text-zinc-400">{formatTime(duration)}</span>
                   </div>
                   <input
+                    ref={seekInputRef}
                     type="range"
                     min="0"
                     max={duration || 100}
-                    value={currentTime}
+                    defaultValue={currentTimeRef.current}
                     onChange={handleSeek}
                     className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
                     style={{
-                      background: `linear-gradient(to right, #22c55e 0%, #22c55e ${(currentTime / (duration || 100)) * 100}%, rgba(255,255,255,0.2) ${(currentTime / (duration || 100)) * 100}%, rgba(255,255,255,0.2) 100%)`,
+                      background: `linear-gradient(to right, #22c55e 0%, #22c55e ${(currentTimeRef.current / (duration || 100)) * 100}%, rgba(255,255,255,0.2) ${(currentTimeRef.current / (duration || 100)) * 100}%, rgba(255,255,255,0.2) 100%)`,
                     }}
                   />
                 </div>
@@ -733,4 +811,4 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 };
 
-export default MusicPlayer;
+export default React.memo(MusicPlayer);

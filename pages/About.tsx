@@ -78,7 +78,7 @@ const About: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
         >
           <motion.div className="flex flex-col justify-center">
             <motion.span
@@ -114,7 +114,7 @@ const About: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
           >
             <motion.div
               variants={aboutCardVariants}
@@ -132,7 +132,7 @@ const About: React.FC = () => {
               className="bg-black dark:bg-white text-white dark:text-black rounded-[2rem] p-6 md:p-8 lg:aspect-square h-32 lg:h-auto flex flex-col justify-end"
               whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}
             >
-              <motion.div className="mb-4 md:mb-5 w-20 md:w-28 h-20 md:h-28 translate-y-[61px]">
+              <motion.div className="mb-4 md:mb-5 w-[220px] md:w-50 translate-y-[38px] translate-y-[61px] translate-x-[-60px]">
                 <DotLottieReact
                   src="https://lottie.host/adc2f2fe-c868-406b-9851-077333d16cd1/pirKpHVawr.lottie"
                   loop
@@ -142,7 +142,7 @@ const About: React.FC = () => {
               </motion.div>
               <h4 className="font-bold text-lg md:text-xl">Continuous Learning</h4>
               <p className="text-xs md:text-sm text-zinc-400 dark:text-zinc-600">
-                Supply chain and inventory systems
+                Data Analyst
               </p>
             </motion.div>
             <motion.div
@@ -167,7 +167,7 @@ const About: React.FC = () => {
           className="bg-zinc-900 rounded-[3rem] p-8 md:p-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.8 }}
         >
           <motion.div
@@ -198,7 +198,7 @@ const About: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
           >
             {EDUCATION_DATA.map((edu, index) => (
               <motion.div
