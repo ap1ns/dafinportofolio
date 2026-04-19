@@ -206,7 +206,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
       {isOpen && (
         <>
           <motion.div
-            className='fixed inset-0 z-[110] bg-black/40 backdrop-blur-md'
+            className="fixed inset-0 z-[110] bg-black/40 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -215,7 +215,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           />
 
           <motion.div
-            className='fixed inset-0 z-[120] flex items-center justify-center p-4'
+            className="fixed inset-0 z-[120] flex items-center justify-center p-4"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
@@ -227,22 +227,22 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               className={`relative overflow-hidden border shadow-2xl ${isDark ? 'border-zinc-800' : 'border-zinc-200'}`}
               style={modalStyle}
             >
-              <div ref={mediaWrapperRef} className='absolute inset-0 h-full w-full'>
+              <div ref={mediaWrapperRef} className="absolute inset-0 h-full w-full">
                 {hasVideo ? (
                   isYouTube && youtubeVideoId ? (
                     <iframe
                       src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playlist=${youtubeVideoId}`}
                       title={project.title}
-                      className='h-full w-full object-cover'
-                      frameBorder='0'
-                      allow='autoplay; encrypted-media; fullscreen'
+                      className="h-full w-full object-cover"
+                      frameBorder="0"
+                      allow="autoplay; encrypted-media; fullscreen"
                       allowFullScreen
                     />
                   ) : (
                     <video
                       ref={videoRef}
                       src={project.videoUrl}
-                      className='h-full w-full object-cover'
+                      className="h-full w-full object-cover"
                       autoPlay
                       loop
                       muted={isMuted}
@@ -253,86 +253,122 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                   <img
                     src={project.imageUrl}
                     alt={project.title}
-                    className='h-full w-full object-cover'
+                    className="h-full w-full object-cover"
                   />
                 )}
               </div>
 
-              <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent' />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
               {isFullscreen && (
                 <button
                   onClick={toggleVideoFullscreen}
-                  title='Exit Fullscreen'
-                  className='absolute top-4 right-4 z-30 p-2 rounded-full bg-black/50 text-white hover:bg-black/80'
+                  title="Exit Fullscreen"
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/50 text-white hover:bg-black/80"
                 >
                   <Minimize2 size={18} />
                 </button>
               )}
 
-              <div className={`absolute inset-0 z-20 flex flex-col justify-between p-4 md:p-6 text-white transition-opacity duration-200 ${isFullscreen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                <div className='bg-black/60 rounded-lg p-4 backdrop-blur-sm'>
-                  <span className='inline-flex items-center px-3 py-1.5 rounded-full bg-white/20 text-xs font-semibold'>{skillName}</span>
-                  <h2 className='text-xl md:text-3xl font-black mt-2'>{project.title}</h2>
-                  <p className='max-w-3xl text-sm md:text-base leading-relaxed mt-2'>{project.description}</p>
+              <div
+                className={`absolute inset-0 z-20 flex flex-col justify-between p-4 md:p-6 text-white transition-opacity duration-200 ${isFullscreen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+              >
+                <div className="bg-black/60 rounded-lg p-4 backdrop-blur-sm">
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/20 text-xs font-semibold">
+                    {skillName}
+                  </span>
+                  <h2 className="text-xl md:text-3xl font-black mt-2">{project.title}</h2>
+                  <p className="max-w-3xl text-sm md:text-base leading-relaxed mt-2">
+                    {project.description}
+                  </p>
                 </div>
 
-                <div className='space-y-2'>
-                  <div className='flex flex-wrap gap-2'>
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
                     {project.tools.map((tool, index) => (
-                      <span key={index} className='px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold'>{tool}</span>
+                      <span
+                        key={index}
+                        className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold"
+                      >
+                        {tool}
+                      </span>
                     ))}
                   </div>
 
                   {isLocalVideo && (
-                    <div onClick={handleSeek} className='h-2 cursor-pointer rounded-full bg-white/20'>
+                    <div
+                      onClick={handleSeek}
+                      className="h-2 cursor-pointer rounded-full bg-white/20"
+                    >
                       <div
-                        className='h-full rounded-full bg-cyan-500'
-                        style={{ width: videoDuration ? `${(videoCurrentTime / videoDuration) * 100}%` : '0%' }}
+                        className="h-full rounded-full bg-cyan-500"
+                        style={{
+                          width: videoDuration
+                            ? `${(videoCurrentTime / videoDuration) * 100}%`
+                            : '0%',
+                        }}
                       />
                     </div>
                   )}
 
                   {isLocalVideo && (
-                    <div className='text-[11px] text-slate-200'>
+                    <div className="text-[11px] text-slate-200">
                       {formatDuration(videoCurrentTime)} / {formatDuration(videoDuration)}
                     </div>
                   )}
 
-                  <div className='flex items-center justify-between gap-2'>
-                    <div className='flex items-center gap-2'>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
                       {isLocalVideo && (
-                        <button onClick={togglePlay} className='p-2 rounded-full bg-white/20 hover:bg-white/30'>
+                        <button
+                          onClick={togglePlay}
+                          className="p-2 rounded-full bg-white/20 hover:bg-white/30"
+                        >
                           {isVideoPlaying ? <Pause size={14} /> : <Play size={14} />}
                         </button>
                       )}
                       {isLocalVideo && (
-                        <button onClick={() => setIsMuted((prev) => !prev)} className='p-2 rounded-full bg-white/20 hover:bg-white/30'>
+                        <button
+                          onClick={() => setIsMuted((prev) => !prev)}
+                          className="p-2 rounded-full bg-white/20 hover:bg-white/30"
+                        >
                           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                         </button>
                       )}
-                      <button onClick={toggleVideoFullscreen} className='p-2 rounded-full bg-white/20 hover:bg-white/30' title='Toggle Full Screen'>
+                      <button
+                        onClick={toggleVideoFullscreen}
+                        className="p-2 rounded-full bg-white/20 hover:bg-white/30"
+                        title="Toggle Full Screen"
+                      >
                         {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
                       </button>
                     </div>
 
-                    <div className='flex items-center gap-2'>
+                    <div className="flex items-center gap-2">
                       {project.downloadUrl ? (
                         <a
                           href={project.downloadUrl}
                           download={project.downloadName || undefined}
-                          className='px-3 py-2 rounded-lg bg-white/20 text-xs font-semibold hover:bg-white/30 flex items-center gap-1'
+                          className="px-3 py-2 rounded-lg bg-white/20 text-xs font-semibold hover:bg-white/30 flex items-center gap-1"
                         >
                           <ExternalLink size={14} />
                           Open
                         </a>
                       ) : project.link ? (
-                        <a href={project.link} target='_blank' rel='noopener noreferrer' className='px-3 py-2 rounded-lg bg-white/20 text-xs font-semibold hover:bg-white/30 flex items-center gap-1'>
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-2 rounded-lg bg-white/20 text-xs font-semibold hover:bg-white/30 flex items-center gap-1"
+                        >
                           <ExternalLink size={14} />
                           Open
                         </a>
                       ) : null}
-                      <button onClick={handleClose} className='p-2 rounded-full bg-white/20 hover:bg-white/30'>
+                      <button
+                        onClick={handleClose}
+                        className="p-2 rounded-full bg-white/20 hover:bg-white/30"
+                      >
                         <X size={14} />
                       </button>
                     </div>

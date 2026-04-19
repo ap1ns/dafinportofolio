@@ -33,11 +33,7 @@ const EasterEgg: React.FC = () => {
             exit={{ scale: 0.8, opacity: 0 }}
             className="w-full h-full flex items-center justify-center"
           >
-            <img
-              src=""
-              alt="Easter egg"
-              className="w-full h-full object-contain"
-            />
+            <img src="" alt="Easter egg" className="w-full h-full object-contain" />
           </motion.div>
 
           {/* Bottom hint text */}
@@ -45,8 +41,7 @@ const EasterEgg: React.FC = () => {
             className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm font-semibold text-center"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-          >
-          </motion.div>
+          ></motion.div>
         </motion.div>
       )}
     </AnimatePresence>

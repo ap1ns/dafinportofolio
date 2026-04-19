@@ -23,7 +23,9 @@ const ExcelViewer: React.FC = () => {
       return;
     }
 
-    const headers = rows[0].map((cell: any, idx: number) => (cell ?? `Column ${idx + 1}`).toString());
+    const headers = rows[0].map((cell: any, idx: number) =>
+      (cell ?? `Column ${idx + 1}`).toString()
+    );
     const bodyRows = rows.slice(1);
     setSheetData({ headers, rows: bodyRows });
   };
@@ -46,7 +48,9 @@ const ExcelViewer: React.FC = () => {
             <thead className="bg-zinc-800 sticky top-0">
               <tr>
                 {sheetData.headers.map((header, i) => (
-                  <th key={i} className="border-b border-zinc-700 px-2 py-1 text-zinc-300">{header}</th>
+                  <th key={i} className="border-b border-zinc-700 px-2 py-1 text-zinc-300">
+                    {header}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -64,7 +68,9 @@ const ExcelViewer: React.FC = () => {
           </table>
         </div>
       ) : (
-        <p className="text-zinc-500 text-sm">Pilih file (.xlsx/.xls/.csv) untuk preview langsung.</p>
+        <p className="text-zinc-500 text-sm">
+          Pilih file (.xlsx/.xls/.csv) untuk preview langsung.
+        </p>
       )}
     </div>
   );

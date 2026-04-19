@@ -16,7 +16,7 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
   isActive,
   onFocus,
   index,
-  totalItems
+  totalItems,
 }) => {
   const [hasClicked, setHasClicked] = useState(false);
 
@@ -25,23 +25,23 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
       'full-time': {
         bg: 'from-blue-600/10 to-blue-400/5',
         text: 'text-blue-600 dark:text-blue-400',
-        accent: 'bg-blue-600/20'
+        accent: 'bg-blue-600/20',
       },
-      'freelance': {
+      freelance: {
         bg: 'from-purple-600/10 to-purple-400/5',
         text: 'text-purple-600 dark:text-purple-400',
-        accent: 'bg-purple-600/20'
+        accent: 'bg-purple-600/20',
       },
-      'internship': {
+      internship: {
         bg: 'from-emerald-600/10 to-emerald-400/5',
         text: 'text-emerald-600 dark:text-emerald-400',
-        accent: 'bg-emerald-600/20'
+        accent: 'bg-emerald-600/20',
       },
-      'project': {
+      project: {
         bg: 'from-amber-600/10 to-amber-400/5',
         text: 'text-amber-600 dark:text-amber-400',
-        accent: 'bg-amber-600/20'
-      }
+        accent: 'bg-amber-600/20',
+      },
     };
     return colors[type] || colors['full-time'];
   };
@@ -56,27 +56,27 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
     initial: {
       opacity: 0,
       y: 20,
-      scale: 0.95
+      scale: 0.95,
     },
     inactive: {
       opacity: 0.4,
       y: 0,
       scale: isActive ? 0.92 : 1,
-      filter: isActive ? 'blur(2px)' : 'blur(0px)'
+      filter: isActive ? 'blur(2px)' : 'blur(0px)',
     },
     active: {
       opacity: 1,
       y: 0,
       scale: 1,
-      filter: 'blur(0px)'
-    }
+      filter: 'blur(0px)',
+    },
   };
 
   const contentVariants = {
     hidden: {
       opacity: 0,
       height: 0,
-      transition: { duration: 0.3 }
+      transition: { duration: 0.3 },
     },
     visible: {
       opacity: 1,
@@ -84,19 +84,19 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
       transition: {
         duration: 0.4,
         staggerChildren: 0.08,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 12 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
   const skillVariants = {
     hidden: { opacity: 0, scale: 0.85 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } }
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } },
   };
 
   return (
@@ -109,7 +109,7 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
         opacity: { duration: 0.4 },
         y: { duration: 0.4, ease: [0.23, 1, 0.32, 1] },
         scale: { duration: 0.4, ease: [0.23, 1, 0.32, 1] },
-        filter: { duration: 0.4 }
+        filter: { duration: 0.4 },
       }}
       onClick={() => {
         onFocus();
@@ -132,15 +132,15 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
           <motion.div
             className={`absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20`}
             style={{
-              background: colors.accent
+              background: colors.accent,
             }}
             animate={{
               rotate: [0, 360],
-              scale: [1, 1.2, 1]
+              scale: [1, 1.2, 1],
             }}
             transition={{
               rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-              scale: { duration: 8, repeat: Infinity, ease: 'easeInOut' }
+              scale: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
             }}
           />
         )}
@@ -153,7 +153,7 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
               <motion.h3
                 className="text-lg md:text-xl font-grotesk font-bold text-black dark:text-white line-clamp-2 break-words"
                 animate={{
-                  fontSize: isActive ? '1.375rem' : '1.125rem'
+                  fontSize: isActive ? '1.375rem' : '1.125rem',
                 }}
                 transition={{ duration: 0.3 }}
               >
@@ -165,7 +165,7 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
             <motion.div
               animate={{
                 scale: isActive ? 1.05 : 1,
-                opacity: isActive ? 1 : 0.7
+                opacity: isActive ? 1 : 0.7,
               }}
               transition={{ duration: 0.3 }}
               className={`
@@ -219,10 +219,7 @@ const InteractiveStoryBlock: React.FC<InteractiveStoryBlockProps> = ({
             exit="hidden"
             className="overflow-hidden"
           >
-            <motion.div
-              className="mt-4 space-y-5"
-              variants={contentVariants}
-            >
+            <motion.div className="mt-4 space-y-5" variants={contentVariants}>
               {/* Full Description */}
               <motion.div
                 variants={itemVariants}

@@ -121,7 +121,7 @@ const ExpandableCardContainer: React.FC<ExpandableCardContainerProps> = ({ skill
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5, ease: 'easeOut' },
     },
   };
 
@@ -137,8 +137,9 @@ const ExpandableCardContainer: React.FC<ExpandableCardContainerProps> = ({ skill
       {/* Section Title */}
       <motion.h2
         variants={itemVariants}
-        className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 px-2 md:px-0 ${isDark ? 'text-white' : 'text-black'
-          }`}
+        className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 px-2 md:px-0 ${
+          isDark ? 'text-white' : 'text-black'
+        }`}
       >
         {skill.name} Projects
       </motion.h2>
@@ -184,10 +185,7 @@ const ExpandableCardContainer: React.FC<ExpandableCardContainerProps> = ({ skill
       {!hasMultipleProjects && (
         <div className="flex justify-center px-2 md:px-0">
           {skill.projects.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={itemVariants}
-            >
+            <motion.div key={project.id} variants={itemVariants}>
               <ExpandableCard
                 project={project}
                 skillColor={skill.color}
@@ -208,8 +206,9 @@ const ExpandableCardContainer: React.FC<ExpandableCardContainerProps> = ({ skill
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
-          className={`mt-4 md:mt-6 px-2 md:px-0 text-center text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-zinc-500' : 'text-zinc-400'
-            }`}
+          className={`mt-4 md:mt-6 px-2 md:px-0 text-center text-xs font-semibold uppercase tracking-widest ${
+            isDark ? 'text-zinc-500' : 'text-zinc-400'
+          }`}
         >
           Drag to explore or scroll
         </motion.div>

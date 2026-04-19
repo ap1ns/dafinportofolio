@@ -28,20 +28,21 @@ const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [honeypot, setHoneypot] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'cooldown'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'cooldown'>(
+    'idle'
+  );
   const [messageCount, setMessageCount] = useState(0);
   const [cooldownTime, setCooldownTime] = useState(0);
   const [lastBatchTime, setLastBatchTime] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-
   const MESSAGE_LIMIT = 10;
   const COOLDOWN_DURATION = 120; // 2 minutes in seconds
 
   // Initialize EmailJS and load from localStorage
   React.useEffect(() => {
-    emailjs.init("3w93-p98IxY80r28o");
+    emailjs.init('3w93-p98IxY80r28o');
 
     // Load rate limit data from localStorage
     const savedData = localStorage.getItem('contactFormRateLimit');
@@ -76,16 +77,19 @@ const Contact: React.FC = () => {
   // Save to localStorage whenever messageCount or lastBatchTime changes
   React.useEffect(() => {
     if (messageCount > 0 || lastBatchTime > 0) {
-      localStorage.setItem('contactFormRateLimit', JSON.stringify({
-        messageCount,
-        lastBatchTime
-      }));
+      localStorage.setItem(
+        'contactFormRateLimit',
+        JSON.stringify({
+          messageCount,
+          lastBatchTime,
+        })
+      );
     }
   }, [messageCount, lastBatchTime]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -111,7 +115,7 @@ const Contact: React.FC = () => {
 
         // Timer countdown
         const interval = setInterval(() => {
-          setCooldownTime(prev => {
+          setCooldownTime((prev) => {
             if (prev <= 1) {
               clearInterval(interval);
               setSubmitStatus('idle');
@@ -137,17 +141,13 @@ const Contact: React.FC = () => {
 
     try {
       // Send email using EmailJS
-      await emailjs.send(
-        "service_ga9oh0t",
-        "template_y9jvpd9",
-        {
-          to_email: "dafinmutashim9@gmail.com",
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message
-        }
-      );
+      await emailjs.send('service_ga9oh0t', 'template_y9jvpd9', {
+        to_email: 'dafinmutashim9@gmail.com',
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      });
 
       setSubmitStatus('success');
       setMessageCount(newCount);
@@ -170,31 +170,35 @@ const Contact: React.FC = () => {
   const socialLinks = [
     {
       icon: <Instagram size={20} />,
-      url: "https://www.instagram.com/_apins2/",
-      label: "Instagram",
-      color: "#a7243c",
-      hoverClass: "hover:text-[#E4405F] hover:border-[#E4405F]/20 hover:bg-[#E4405F]/5 dark:hover:text-[#E4405F] dark:hover:border-[#E4405F]/30 dark:hover:bg-[#E4405F]/10"
+      url: 'https://www.instagram.com/_apins2/',
+      label: 'Instagram',
+      color: '#a7243c',
+      hoverClass:
+        'hover:text-[#E4405F] hover:border-[#E4405F]/20 hover:bg-[#E4405F]/5 dark:hover:text-[#E4405F] dark:hover:border-[#E4405F]/30 dark:hover:bg-[#E4405F]/10',
     },
     {
       icon: <Music2 size={20} />,
-      url: "https://www.tiktok.com/@_apins_",
-      label: "TikTok",
-      color: "#000",
-      hoverClass: "hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/5"
+      url: 'https://www.tiktok.com/@_apins_',
+      label: 'TikTok',
+      color: '#000',
+      hoverClass:
+        'hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/5',
     },
     {
       icon: <Linkedin size={20} />,
-      url: "https://www.linkedin.com/in/dafin-mu-tashim-277519308/",
-      label: "LinkedIn",
-      color: "#0077B5",
-      hoverClass: "hover:text-[#0077B5] hover:border-[#0077B5]/20 hover:bg-[#0077B5]/5 dark:hover:text-[#0077B5] dark:hover:border-[#0077B5]/30 dark:hover:bg-[#0077B5]/10"
+      url: 'https://www.linkedin.com/in/dafin-mu-tashim-277519308/',
+      label: 'LinkedIn',
+      color: '#0077B5',
+      hoverClass:
+        'hover:text-[#0077B5] hover:border-[#0077B5]/20 hover:bg-[#0077B5]/5 dark:hover:text-[#0077B5] dark:hover:border-[#0077B5]/30 dark:hover:bg-[#0077B5]/10',
     },
     {
       icon: <Youtube size={20} />,
-      url: "https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE",
-      label: "YouTube",
-      color: "#FF0000",
-      hoverClass: "hover:text-[#FF0000] hover:border-[#FF0000]/20 hover:bg-[#FF0000]/5 dark:hover:text-[#FF0000] dark:hover:border-[#FF0000]/30 dark:hover:bg-[#FF0000]/10"
+      url: 'https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE',
+      label: 'YouTube',
+      color: '#FF0000',
+      hoverClass:
+        'hover:text-[#FF0000] hover:border-[#FF0000]/20 hover:bg-[#FF0000]/5 dark:hover:text-[#FF0000] dark:hover:border-[#FF0000]/30 dark:hover:bg-[#FF0000]/10',
     },
   ];
 
@@ -204,14 +208,14 @@ const Contact: React.FC = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const socialVariants = {
@@ -219,13 +223,16 @@ const Contact: React.FC = () => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.4 }
-    }
+      transition: { duration: 0.4 },
+    },
   };
 
   return (
-    <motion.div ref={sectionRef} className={`relative bg-white dark:bg-black py-12 md:py-20 px-6 min-h-screen transition-opacity duration-300`} style={{ opacity: sectionOpacity, transition: 'opacity 0.3s ease-out' }}>
-
+    <motion.div
+      ref={sectionRef}
+      className={`relative bg-white dark:bg-black py-12 md:py-20 px-6 min-h-screen transition-opacity duration-300`}
+      style={{ opacity: sectionOpacity, transition: 'opacity 0.3s ease-out' }}
+    >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -233,7 +240,7 @@ const Contact: React.FC = () => {
           animate={{
             y: [0, 50, 0],
             x: [0, 40, 0],
-            rotate: [0, 180, 360]
+            rotate: [0, 180, 360],
           }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           style={{ y: backgroundOrb1Y, rotate: backgroundOrb1Rotate }}
@@ -243,7 +250,7 @@ const Contact: React.FC = () => {
           animate={{
             y: [0, -60, 0],
             x: [0, -50, 0],
-            rotate: [360, 180, 0]
+            rotate: [360, 180, 0],
           }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
           style={{ y: backgroundOrb2Y, rotate: backgroundOrb2Rotate }}
@@ -257,29 +264,36 @@ const Contact: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            style={{ y: isMobile ? 0 : leftY, rotate: isMobile ? 0 : leftRotate, scale: contentScale }}
+            viewport={{ once: true, margin: '-100px' }}
+            style={{
+              y: isMobile ? 0 : leftY,
+              rotate: isMobile ? 0 : leftRotate,
+              scale: contentScale,
+            }}
           >
             <motion.span
               variants={itemVariants}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
               className="text-xs font-bold tracking-[0.3em] text-zinc-400 dark:text-zinc-500 uppercase mb-4 block"
             >
               Let's Connect
             </motion.span>
             <motion.h1
               variants={itemVariants}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
               className="text-6xl md:text-8xl font-display mb-8 text-black dark:text-white"
             >
               LET'S CONNECT
             </motion.h1>
             <motion.p
               variants={itemVariants}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
               className="text-zinc-500 dark:text-zinc-400 text-lg mb-12 leading-relaxed max-w-md"
             >
-              f you are looking for a dedicated and detail-oriented professional to support your logistics or administrative operations, feel free to reach out. I am available for interviews and ready to discuss how my skills can contribute to your team. I typically respond within 24 hours
+              f you are looking for a dedicated and detail-oriented professional to support your
+              logistics or administrative operations, feel free to reach out. I am available for
+              interviews and ready to discuss how my skills can contribute to your team. I typically
+              respond within 24 hours
             </motion.p>
 
             <motion.div
@@ -291,10 +305,10 @@ const Contact: React.FC = () => {
             >
               <motion.div
                 variants={itemVariants}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
                 className="flex items-center gap-6 p-6 rounded-3xl bg-zinc-50 dark:bg-zinc-900 group transition-all duration-300 cursor-pointer border border-transparent"
                 whileHover={{ scale: 1.05 }}
-                onClick={() => window.location.href = 'mailto:dafinmutashim9@gmail.com'}
+                onClick={() => (window.location.href = 'mailto:dafinmutashim9@gmail.com')}
               >
                 <motion.div
                   className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center shadow-sm text-black dark:text-white group-hover:text-gray-400 dark:group-hover:text-gray-400 transition-all duration-300 group-hover:scale-110 flex-shrink-0"
@@ -304,14 +318,18 @@ const Contact: React.FC = () => {
                   <Mail size={24} />
                 </motion.div>
                 <div className="min-w-0 max-w-xs">
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 transition-colors text-black dark:text-white">Email Me</p>
-                  <p className="text-xl md:text-xl text-sm font-bold transition-colors text-black dark:text-white truncate">dafinmutashim9@gmail.com</p>
+                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 transition-colors text-black dark:text-white">
+                    Email Me
+                  </p>
+                  <p className="text-xl md:text-xl text-sm font-bold transition-colors text-black dark:text-white truncate">
+                    dafinmutashim9@gmail.com
+                  </p>
                 </div>
               </motion.div>
 
               <motion.div
                 variants={itemVariants}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
                 className="flex items-center gap-6 p-6 rounded-3xl bg-zinc-50 dark:bg-zinc-900 border border-transparent dark:border-zinc-800"
                 whileHover={{ scale: 1.05 }}
               >
@@ -323,7 +341,9 @@ const Contact: React.FC = () => {
                   <MessageSquare size={24} />
                 </motion.div>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 mb-3 text-black dark:text-white">Direct Messages</p>
+                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 mb-3 text-black dark:text-white">
+                    Direct Messages
+                  </p>
                   <motion.div
                     className="flex gap-3"
                     variants={containerVariants}
@@ -358,7 +378,7 @@ const Contact: React.FC = () => {
               perspective: isMobile ? 'none' : '2000px',
               y: isMobile ? 0 : rightY,
               rotate: isMobile ? 0 : rightRotate,
-              scale: contentScale
+              scale: contentScale,
             }}
           >
             {isMobile ? (
@@ -367,7 +387,7 @@ const Contact: React.FC = () => {
                 className="w-full rounded-2xl sm:rounded-[3rem] overflow-hidden border border-white/10 bg-black shadow-2xl backdrop-blur-xl"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 <div className="relative z-10 w-full flex flex-col p-5 md:p-8 min-h-[600px]">
@@ -493,7 +513,8 @@ const Contact: React.FC = () => {
                           )}
                           {submitStatus === 'cooldown' && (
                             <div className="p-4 bg-amber-500/10 border border-amber-400/20 rounded-2xl text-amber-100 text-sm">
-                              You've sent 10 messages. Please wait {cooldownTime}s before sending more.
+                              You've sent 10 messages. Please wait {cooldownTime}s before sending
+                              more.
                             </div>
                           )}
                           <div className="text-center text-[11px] text-white/40 mb-4">
@@ -504,7 +525,11 @@ const Contact: React.FC = () => {
                             disabled={isLoading || submitStatus === 'cooldown'}
                             className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-white/90 hover:text-black active:bg-white/95 active:text-black active:scale-95 transition duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed text-sm backdrop-blur-sm border border-white/20 shadow-sm hover:shadow-md"
                           >
-                            {isLoading ? 'Sending...' : submitStatus === 'cooldown' ? `Wait ${cooldownTime}s` : 'Send Message'}
+                            {isLoading
+                              ? 'Sending...'
+                              : submitStatus === 'cooldown'
+                                ? `Wait ${cooldownTime}s`
+                                : 'Send Message'}
                           </button>
                         </form>
                       </div>
@@ -518,26 +543,26 @@ const Contact: React.FC = () => {
                 className="w-full h-full relative preserve-3d"
                 animate={{
                   rotateY: isFlipped ? 180 : 0,
-                  scale: isFlipped ? 1.02 : 1
+                  scale: isFlipped ? 1.02 : 1,
                 }}
                 transition={{
                   duration: 1.2,
                   ease: [0.25, 0.46, 0.45, 0.94],
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 100,
-                  damping: 20
+                  damping: 20,
                 }}
                 style={{
                   transformStyle: 'preserve-3d',
-                  perspective: '2000px'
+                  perspective: '2000px',
                 }}
               >
                 {/* Flip glow effect */}
                 <motion.div
                   className="absolute inset-0 rounded-2xl sm:rounded-[3rem] pointer-events-none"
                   animate={{
-                    boxShadow: "0 0 0 rgba(0,0,0,0)",
-                    background: "transparent"
+                    boxShadow: '0 0 0 rgba(0,0,0,0)',
+                    background: 'transparent',
                   }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
                   style={{ zIndex: -1 }}
@@ -550,11 +575,11 @@ const Contact: React.FC = () => {
                   <motion.div
                     className="absolute inset-0 bg-transparent"
                     animate={{
-                      opacity: 0
+                      opacity: 0,
                     }}
                     transition={{
                       duration: 0.6,
-                      ease: 'easeInOut'
+                      ease: 'easeInOut',
                     }}
                   />
                 </motion.div>
@@ -565,16 +590,16 @@ const Contact: React.FC = () => {
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                     transform: 'rotateY(0deg)',
-                    zIndex: isFlipped ? 0 : 1
+                    zIndex: isFlipped ? 0 : 1,
                   }}
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
+                  viewport={{ once: true, margin: '-100px' }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   whileHover={{
                     scale: 1.02,
-                    boxShadow: "0 25px 60px rgba(0,0,0,0.25), 0 0 30px rgba(255,255,255,0.1)",
-                    transition: { duration: 0.3 }
+                    boxShadow: '0 25px 60px rgba(0,0,0,0.25), 0 0 30px rgba(255,255,255,0.1)',
+                    transition: { duration: 0.3 },
                   }}
                 >
                   <div className="absolute inset-0 bg-black/80" />
@@ -610,7 +635,8 @@ const Contact: React.FC = () => {
                           transition={{ delay: 0.35, duration: 0.7 }}
                           className="max-w-xl text-xs sm:text-sm md:text-base text-white leading-relaxed"
                         >
-                          From precise data entry to organized warehouse operations. Let's build a more efficient workflow together
+                          From precise data entry to organized warehouse operations. Let's build a
+                          more efficient workflow together
                         </motion.p>
                       </div>
 
@@ -625,18 +651,23 @@ const Contact: React.FC = () => {
                           initial={{ opacity: 0, y: 30, scale: 0.95 }}
                           whileInView={{ opacity: 1, y: 0, scale: 1 }}
                           viewport={{ once: true }}
-                          transition={{ delay: 0.55, duration: 0.6, type: 'spring', stiffness: 120 }}
+                          transition={{
+                            delay: 0.55,
+                            duration: 0.6,
+                            type: 'spring',
+                            stiffness: 120,
+                          }}
                           whileHover={{
                             scale: 1.03,
-                            boxShadow: "0 18px 45px rgba(255,255,255,0.22)",
+                            boxShadow: '0 18px 45px rgba(255,255,255,0.22)',
                             backgroundColor: 'rgba(255,255,255,0.95)',
-                            color: '#000'
+                            color: '#000',
                           }}
                           whileTap={{
                             scale: 0.97,
-                            boxShadow: "0 12px 32px rgba(255,255,255,0.18)",
+                            boxShadow: '0 12px 32px rgba(255,255,255,0.18)',
                             backgroundColor: 'rgba(255,255,255,0.95)',
-                            color: '#000'
+                            color: '#000',
                           }}
                           className="relative inline-flex items-center justify-center w-full rounded-3xl border border-white/20 bg-black px-10 py-4 text-white text-base font-semibold shadow-lg backdrop-blur-sm transition duration-300"
                         >
@@ -657,7 +688,7 @@ const Contact: React.FC = () => {
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                     transform: 'rotateY(180deg)',
-                    zIndex: isFlipped ? 1 : 0
+                    zIndex: isFlipped ? 1 : 0,
                   }}
                 >
                   <div className="relative z-10 w-full flex flex-col p-5 md:p-8 h-full">
@@ -783,7 +814,8 @@ const Contact: React.FC = () => {
                             )}
                             {submitStatus === 'cooldown' && (
                               <div className="p-4 bg-amber-500/10 border border-amber-400/20 rounded-2xl text-amber-100 text-sm">
-                                You've sent 10 messages. Please wait {cooldownTime}s before sending more.
+                                You've sent 10 messages. Please wait {cooldownTime}s before sending
+                                more.
                               </div>
                             )}
                             <div className="text-center text-[11px] text-white/40 mb-4">
@@ -794,7 +826,11 @@ const Contact: React.FC = () => {
                               disabled={isLoading || submitStatus === 'cooldown'}
                               className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-white/90 hover:text-black active:bg-white/95 active:text-black active:scale-95 transition duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed text-sm backdrop-blur-sm border border-white/20 shadow-sm hover:shadow-md"
                             >
-                              {isLoading ? 'Sending...' : submitStatus === 'cooldown' ? `Wait ${cooldownTime}s` : 'Send Message'}
+                              {isLoading
+                                ? 'Sending...'
+                                : submitStatus === 'cooldown'
+                                  ? `Wait ${cooldownTime}s`
+                                  : 'Send Message'}
                             </button>
                           </form>
                         </div>

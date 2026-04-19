@@ -11,7 +11,9 @@ import { PAGE_BACKGROUNDS } from '../config/pageBackgrounds';
 const Experience: React.FC = () => {
   const { isDark } = useTheme();
   const { opacity } = useScrollVisibility();
-  const backgroundUrl = isDark ? PAGE_BACKGROUNDS.experience.dark : PAGE_BACKGROUNDS.experience.light;
+  const backgroundUrl = isDark
+    ? PAGE_BACKGROUNDS.experience.dark
+    : PAGE_BACKGROUNDS.experience.light;
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const sectionOpacity = useTransform(scrollYProgress, [0, 0.1, 0.7, 1], [0, 1, 1, 0.92]);
@@ -29,7 +31,11 @@ const Experience: React.FC = () => {
   const [focusedId, setFocusedId] = useState<string | null>(null);
 
   return (
-    <motion.div ref={sectionRef} className={`relative bg-gradient-to-b from-black via-black/95 to-black overflow-hidden py-32 px-6 min-h-screen transition-opacity duration-300`} style={{ opacity: sectionOpacity, transition: 'opacity 0.3s ease-out' }}>
+    <motion.div
+      ref={sectionRef}
+      className={`relative bg-gradient-to-b from-black via-black/95 to-black overflow-hidden py-32 px-6 min-h-screen transition-opacity duration-300`}
+      style={{ opacity: sectionOpacity, transition: 'opacity 0.3s ease-out' }}
+    >
       <PageBackground url={backgroundUrl} hideOnMobile={true} />
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -39,7 +45,7 @@ const Experience: React.FC = () => {
           animate={{
             y: [0, 60, 0],
             x: [0, 40, 0],
-            rotate: [0, 180, 360]
+            rotate: [0, 180, 360],
           }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
           style={{ y: backgroundOrb1Y, rotate: backgroundOrb1Rotate }}
@@ -49,7 +55,7 @@ const Experience: React.FC = () => {
           animate={{
             y: [0, -60, 0],
             x: [0, -40, 0],
-            rotate: [360, 180, 0]
+            rotate: [360, 180, 0],
           }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           style={{ y: backgroundOrb2Y, rotate: backgroundOrb2Rotate }}
@@ -60,7 +66,7 @@ const Experience: React.FC = () => {
           className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-cyan-500/15 blur-3xl"
           animate={{
             y: [0, -80, 0],
-            x: [0, 50, 0]
+            x: [0, 50, 0],
           }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
@@ -68,7 +74,7 @@ const Experience: React.FC = () => {
           className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-pink-500/10 blur-3xl"
           animate={{
             y: [0, 70, 0],
-            x: [0, -60, 0]
+            x: [0, -60, 0],
           }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
         />
@@ -81,18 +87,22 @@ const Experience: React.FC = () => {
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              background: ['rgba(100, 150, 255, 0.6)', 'rgba(150, 100, 255, 0.5)', 'rgba(100, 200, 255, 0.4)'][i % 3]
+              background: [
+                'rgba(100, 150, 255, 0.6)',
+                'rgba(150, 100, 255, 0.5)',
+                'rgba(100, 200, 255, 0.4)',
+              ][i % 3],
             }}
             animate={{
               y: [-100, 300],
               x: [0, Math.random() * 100 - 50],
-              opacity: [0, 0.8, 0]
+              opacity: [0, 0.8, 0],
             }}
             transition={{
               duration: 8 + Math.random() * 6,
               repeat: Infinity,
               delay: i * 0.5,
-              ease: 'easeOut'
+              ease: 'easeOut',
             }}
           />
         ))}
@@ -102,7 +112,7 @@ const Experience: React.FC = () => {
           className="absolute top-1/2 left-1/2 w-96 h-96 rounded-full bg-blue-500/5 blur-2xl -translate-x-1/2 -translate-y-1/2"
           animate={{
             scale: [0.8, 1.2, 0.8],
-            opacity: [0.3, 0.6, 0.3]
+            opacity: [0.3, 0.6, 0.3],
           }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -112,7 +122,7 @@ const Experience: React.FC = () => {
           className="absolute top-1/3 right-1/4 w-80 h-80 border border-cyan-500/20 rounded-full"
           animate={{
             rotate: [0, 360],
-            opacity: [0.2, 0.5, 0.2]
+            opacity: [0.2, 0.5, 0.2],
           }}
           transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         />
@@ -124,7 +134,7 @@ const Experience: React.FC = () => {
           className="mb-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
           style={{ y: headerY, rotate: headerRotate, scale: contentScale }}
         >
@@ -145,7 +155,8 @@ const Experience: React.FC = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed font-light">
-            A diverse journey blending creative vision with analytical rigor. Each experience shaped my approach to solving complex problems and delivering measurable impact.
+            A diverse journey blending creative vision with analytical rigor. Each experience shaped
+            my approach to solving complex problems and delivering measurable impact.
           </p>
         </motion.div>
 
@@ -154,7 +165,7 @@ const Experience: React.FC = () => {
           className="space-y-3"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5, staggerChildren: 0.1 }}
           style={{ y: blocksY, scale: contentScale }}
         >
@@ -189,7 +200,7 @@ const Experience: React.FC = () => {
           className="mt-28 pt-20 border-t border-white/10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, delay: 0.3 }}
           style={{ y: ctaY }}
         >
@@ -219,7 +230,9 @@ const Experience: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                Whether you are looking for organized inventory management, precise data administration, or efficient warehouse support—I am ready to help streamline your business processes.
+                Whether you are looking for organized inventory management, precise data
+                administration, or efficient warehouse support—I am ready to help streamline your
+                business processes.
               </motion.p>
 
               <motion.a

@@ -21,7 +21,7 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
   skillName = '',
   isExpanded: controlledExpanded = false,
   onExpand,
-  onCollapse
+  onCollapse,
 }) => {
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -60,7 +60,11 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
   // Check if URL is a local/direct video file
   const isLocalVideoUrl = (url: string): boolean => {
     if (!url) return false;
-    return /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url) || url.includes('pixabay') || url.includes('/video');
+    return (
+      /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url) ||
+      url.includes('pixabay') ||
+      url.includes('/video')
+    );
   };
 
   // Extract TikTok video ID from various TikTok URL formats
@@ -125,15 +129,16 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
       layout
       initial={false}
       animate={{ width: isExpanded ? expandedWidth : compactWidth }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`relative rounded-2xl overflow-hidden ${isDark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
-        } border shadow-lg hover:shadow-2xl transition-all duration-300`}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`relative rounded-2xl overflow-hidden ${
+        isDark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
+      } border shadow-lg hover:shadow-2xl transition-all duration-300`}
       style={{ opacity, transition: 'opacity 0.3s ease-out' }}
     >
       {/* Media Container - Always maintains aspect ratio, never zooms */}
       <motion.div
         layout
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="w-full overflow-hidden bg-gradient-to-br from-zinc-800 to-black relative"
         style={{ paddingTop: cardPaddingTop, height: 0 }}
       >
@@ -180,16 +185,19 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
                   title={project.title}
                 />
               )}
-              {isLocalVideoUrl(project.videoUrl!) && !getYouTubeVideoId(project.videoUrl!) && !getTikTokVideoId(project.videoUrl!) && !getInstagramPostId(project.videoUrl!) && (
-                <video
-                  src={project.videoUrl}
-                  className="w-full h-full object-cover pointer-events-none"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                />
-              )}
+              {isLocalVideoUrl(project.videoUrl!) &&
+                !getYouTubeVideoId(project.videoUrl!) &&
+                !getTikTokVideoId(project.videoUrl!) &&
+                !getInstagramPostId(project.videoUrl!) && (
+                  <video
+                    src={project.videoUrl}
+                    className="w-full h-full object-cover pointer-events-none"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                )}
             </div>
           )}
 
@@ -204,7 +212,9 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
                 transition={{ duration: 0.3 }}
                 className="absolute inset-0 flex items-center justify-center cursor-pointer group pointer-events-none"
               >
-                <div className={`absolute inset-0 pointer-events-none ${isDark ? 'bg-black/20' : 'bg-black/10'}`} />
+                <div
+                  className={`absolute inset-0 pointer-events-none ${isDark ? 'bg-black/20' : 'bg-black/10'}`}
+                />
                 <motion.button
                   onClick={handleExpand}
                   whileHover={{ scale: 1.08, y: -2 }}
@@ -221,8 +231,9 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
           {/* Overlay for expanded state */}
           {isExpanded && (
             <div
-              className={`absolute inset-0 ${isDark ? 'bg-black/30' : 'bg-black/20'
-                } transition-colors duration-300`}
+              className={`absolute inset-0 ${
+                isDark ? 'bg-black/30' : 'bg-black/20'
+              } transition-colors duration-300`}
             />
           )}
         </div>

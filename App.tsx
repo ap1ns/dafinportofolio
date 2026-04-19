@@ -1,6 +1,13 @@
-
-import React, { useState, useEffect, useLayoutEffect, useCallback, Suspense, lazy, useRef } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  Suspense,
+  lazy,
+  useRef,
+} from 'react';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
 import { EasterEggProvider } from './context/EasterEggContext';
@@ -99,12 +106,22 @@ const MainLayout = () => (
         <Home />
       </Suspense>
     </ViewportSection>
-    <ViewportSection id="about" className="scroll-mt-20 reveal" rootMargin="800px" minHeight="100vh">
+    <ViewportSection
+      id="about"
+      className="scroll-mt-20 reveal"
+      rootMargin="800px"
+      minHeight="100vh"
+    >
       <Suspense fallback={<PageLoader />}>
         <About />
       </Suspense>
     </ViewportSection>
-    <ViewportSection id="experience" className="scroll-mt-20 reveal" rootMargin="800px" minHeight="100vh">
+    <ViewportSection
+      id="experience"
+      className="scroll-mt-20 reveal"
+      rootMargin="800px"
+      minHeight="100vh"
+    >
       <Suspense fallback={<PageLoader />}>
         <Experience />
       </Suspense>
@@ -134,17 +151,21 @@ const App: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [isTrackListOpen, setIsTrackListOpen] = useState(false);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => {
-    if (AUDIO_TRACKS.length === 0) return 0;
-    return Math.floor(Math.random() * AUDIO_TRACKS.length);
-  });
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playerBarRef = useRef<HTMLDivElement | null>(null);
   const trackListRef = useRef<HTMLDivElement | null>(null);
+  const loadingCompleteTimeoutRef = useRef<number | null>(null);
+  const openPlaylistTimeoutRef = useRef<number | null>(null);
+
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    // Small delay to allow loading screen exit animation
-    setTimeout(() => {
+
+    if (loadingCompleteTimeoutRef.current) {
+      window.clearTimeout(loadingCompleteTimeoutRef.current);
+    }
+
+    loadingCompleteTimeoutRef.current = window.setTimeout(() => {
       setLoadingComplete(true);
     }, 800);
   };
@@ -158,63 +179,18 @@ const App: React.FC = () => {
     };
   }, [loadingComplete]);
 
-  // Tutup detail player ketika user klik/tap di luar area player (semua layar)
-  useEffect(() => {
-    if (!isPlayerOpen) return;
-
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as Node | null;
-      if (!target) return;
-      if (playerBarRef.current && !playerBarRef.current.contains(target)) {
-        setIsPlayerOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, [isPlayerOpen]);
-
-  // Sembunyikan player dan playlist ketika user melakukan scroll pada halaman (bukan dalam playlist) - DISABLED
-  /*
   useEffect(() => {
     if (!isPlayerOpen && !isTrackListOpen) return;
 
-    const hideOnScroll = (event: Event) => {
-      // Jika scroll berasal dari dalam playlist (trackListRef), jangan tutup playlist
-      if (isTrackListOpen && trackListRef.current && trackListRef.current.contains(event.target as Node)) {
-        return;
-      }
-
-      // Jika scroll dari halaman web, tutup player dan playlist
-      setIsPlayerOpen(false);
-      setIsTrackListOpen(false);
-    };
-
-    window.addEventListener('scroll', hideOnScroll, { passive: true });
-    window.addEventListener('wheel', hideOnScroll, { passive: true });
-    window.addEventListener('touchmove', hideOnScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', hideOnScroll);
-      window.removeEventListener('wheel', hideOnScroll);
-      window.removeEventListener('touchmove', hideOnScroll);
-    };
-  }, [isPlayerOpen, isTrackListOpen]);
-  */
-
-  // Tutup track list ketika user klik/tap di luar area track list
-  useEffect(() => {
-    if (!isTrackListOpen) return;
-
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node | null;
       if (!target) return;
-      if (trackListRef.current && !trackListRef.current.contains(target)) {
+
+      const clickedPlayerBar = playerBarRef.current?.contains(target);
+      const clickedTrackList = trackListRef.current?.contains(target);
+
+      if (!clickedPlayerBar && !clickedTrackList) {
+        setIsPlayerOpen(false);
         setIsTrackListOpen(false);
       }
     };
@@ -226,7 +202,7 @@ const App: React.FC = () => {
       document.removeEventListener('click', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [isTrackListOpen]);
+  }, [isPlayerOpen, isTrackListOpen]);
 
   // Prevent body scroll when playlist is open
   useEffect(() => {
@@ -248,16 +224,17 @@ const App: React.FC = () => {
   }, [isTrackListOpen]);
 
   const openPlaylist = useCallback(() => {
-    console.log('openPlaylist called, setting isPlayerOpen and isTrackListOpen to true');
-    console.log('Current state - isPlayerOpen:', isPlayerOpen, 'isTrackListOpen:', isTrackListOpen);
     setIsPlayerOpen(true);
     setIsTrackListOpen(true);
 
-    // Scroll to the open playlist modal if it's mounted
-    setTimeout(() => {
+    if (openPlaylistTimeoutRef.current) {
+      window.clearTimeout(openPlaylistTimeoutRef.current);
+    }
+
+    openPlaylistTimeoutRef.current = window.setTimeout(() => {
       trackListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 50);
-  }, [isPlayerOpen, isTrackListOpen]);
+  }, []);
 
   // Listen untuk custom event dari Navbar untuk membuka playlist
   useLayoutEffect(() => {
@@ -271,14 +248,71 @@ const App: React.FC = () => {
       window.removeEventListener('openPlaylist', openPlaylist as EventListener);
       window.removeEventListener('openMusicPlayer', openPlaylist as EventListener);
     };
-  }, [openPlaylist]);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (loadingCompleteTimeoutRef.current) {
+        window.clearTimeout(loadingCompleteTimeoutRef.current);
+      }
+      if (openPlaylistTimeoutRef.current) {
+        window.clearTimeout(openPlaylistTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const AppContent: React.FC = () => {
+    const location = useLocation();
+
+    return (
+      <>
+        {/* Navbar with delayed entrance */}
+        {loadingComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Navbar onOpenPlaylist={openPlaylist} />
+          </motion.div>
+        )}
+
+        {/* Main Content */}
+        {loadingComplete && (
+          <motion.main
+            className="flex-grow relative z-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <MainLayout />
+          </motion.main>
+        )}
+
+        {/* Footer with delayed entrance */}
+        {loadingComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          >
+            <Footer />
+          </motion.div>
+        )}
+      </>
+    );
+  };
 
   return (
     <ThemeProvider>
       <ModalProvider>
         <EasterEggProvider>
-          <BrowserRouter>
-            <AudioProvider audioRef={audioRef} isSoundEnabled={soundEnabled} openPlaylist={openPlaylist}>
+          <BrowserRouter basename="/dafinportofolio/">
+            <AudioProvider
+              audioRef={audioRef}
+              isSoundEnabled={soundEnabled}
+              openPlaylist={openPlaylist}
+            >
               <div className="min-h-screen flex flex-col bg-black overflow-x-hidden selection:bg-white selection:text-black transition-colors duration-300 relative">
                 {/* Loading Screen */}
                 <LoadingScreen
@@ -288,6 +322,9 @@ const App: React.FC = () => {
                   onStart={() => {
                     setHasStarted(true);
                     setSoundEnabled(true);
+                    if (AUDIO_TRACKS.length > 0) {
+                      setCurrentTrackIndex(Math.floor(Math.random() * AUDIO_TRACKS.length));
+                    }
                   }}
                   onStartWithoutMusic={() => {
                     setHasStarted(true);
@@ -315,46 +352,15 @@ const App: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
 
                   {/* Noise texture */}
-                  <div className="absolute inset-0 opacity-[0.12] bg-noise" style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-                  }} />
+                  <div
+                    className="absolute inset-0 opacity-[0.12] bg-noise"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                    }}
+                  />
                 </div>
 
-                {/* Navbar with delayed entrance */}
-                {loadingComplete && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Navbar onOpenPlaylist={openPlaylist} />
-                  </motion.div>
-                )}
-
-                {/* Main Content */}
-                {loadingComplete && (
-                  <motion.main
-                    className="flex-grow relative z-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Routes>
-                      <Route path="/" element={<MainLayout />} />
-                    </Routes>
-                  </motion.main>
-                )}
-
-                {/* Footer with delayed entrance */}
-                {loadingComplete && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                  >
-                    <Footer />
-                  </motion.div>
-                )}
+                <AppContent />
 
                 {/* Easter Egg Component */}
                 <EasterEgg />

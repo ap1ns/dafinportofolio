@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 
-const LottieAnimation: React.FC = () => {
+interface LottieAnimationProps {
+  animationPath?: string;
+  className?: string;
+}
+
+const LottieAnimation: React.FC<LottieAnimationProps> = ({
+  animationPath = '/lottie/animation.json',
+  className = 'lottie-responsive reveal',
+}) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -12,13 +20,13 @@ const LottieAnimation: React.FC = () => {
       renderer: 'svg',
       loop: true,
       autoplay: true,
-      path: '/lottie/animation.json',
+      path: animationPath,
     });
 
     return () => animation.destroy();
-  }, []);
+  }, [animationPath]);
 
-  return <div id="lottie-container" ref={containerRef} className="lottie-responsive reveal" />;
+  return <div id="lottie-container" ref={containerRef} className={className} />;
 };
 
 export default LottieAnimation;

@@ -1,47 +1,74 @@
 export type AudioTrack = {
-    url: string;
-    title: string;
-    artist?: string;
-    cover?: string;
+  url: string;
+  title: string;
+  artist?: string;
+  cover?: string;
 };
 
-const track = (
-    fileName: string,
-    title: string,
-    artist?: string,
-    cover?: string,
-): AudioTrack => ({
-    url: `/music/${fileName}.mp3`,
-    title,
-    artist,
-    cover,
+const track = (fileName: string, title: string, artist?: string, cover?: string): AudioTrack => ({
+  url: `public/music/${fileName}.mp3`,
+  title,
+  artist,
+  cover,
 });
 
 export const AUDIO_TRACKS: AudioTrack[] = [
-    track(
-        'MikiMatsubari_Staywithme',
-        'Stay With Me',
-        'Miki Matsubara',
-        'https://i.pinimg.com/1200x/23/98/95/239895d8673e26e15f7bde2bc8af28c1.jpg',
-    ),
-    track(
-        '20201203_MacDeMarco',
-        '20201203',
-        'Mac De Marco',
-        'https://i.pinimg.com/736x/c0/45/0a/c0450a2479d0c69d12871fde511bd9a9.jpg',
-    ),
-    track(
-        'Amigdala_KukiraKauRumah',
-        'Kukira Kau Rumah',
-        'Amigdala',
-        'https://i.pinimg.com/736x/fe/cb/46/fecb465913b702bb60da4cc576022cbd.jpg',
-    ),
-    track(
-        'Slank_Maafkan',
-        'Maafkan',
-        'Slank',
-        'https://i.pinimg.com/1200x/f2/f1/2c/f2f12c28eeb4baf7223b771b768a5809.jpg',
-    ),
-
-
+  track('MikiMatsubari_Staywithme', 'Stay With Me', 'Miki Matsubara', 'https://i.pinimg.com/736x/8f/f7/26/8ff7268add8ed43cafc30e5cf892e4c5.jpg '),
+  track('20201203_MacDeMarco', '20201203', 'Mac De Marco', 'https://i.pinimg.com/1200x/35/61/15/3561157ac921d599581740527ebb5911.jpg '),
+  track('Amigdala_KukiraKauRumah', 'Kukira Kau Rumah', 'Amigdala', 'https://i.pinimg.com/736x/0b/54/d5/0b54d566b9135552fc360ef3a2e7c2f1.jpg '),
+  track('Slank_Maafkan', 'Maafkan', 'Slank', 'https://i.pinimg.com/736x/67/ee/4d/67ee4d01ef80d628526e665f7189910a.jpg '),
+  track('33x - Perunggu', '33x', 'Perunggu', 'https://i.pinimg.com/736x/2a/28/ec/2a28ec1f6bfea6ec5631b03604673fab.jpg '),
+  track('Ada titik-titik di ujung doa - Sal Priadi', 'Ada titik-titik di ujung doa', 'Sal Priadi', 'https://i.pinimg.com/1200x/c1/55/53/c155537ff83e9f992123505f5fbb01f0.jpg '),
+  track('Am I Bothering You_ - Reality Club', 'Am I Bothering You?', 'Reality Club', 'https://i.pinimg.com/1200x/6f/7f/65/6f7f65feff3ca008da8794cff855bc22.jpg '),
+  track('Amin Paling Serius - Sal Priadi', 'Amin Paling Serius', 'Sal Priadi, Nadin Amizah', 'https://i.pinimg.com/736x/54/8f/10/548f1031c8a508d72c5b90526d52685d.jpg '),
+  track('Andai Dia Tahu - Kahitna', 'Andai Dia Tahu', 'Kahitna', ' https://i.pinimg.com/736x/e6/81/6c/e6816c62e98c8f60bcb3321bf7a8fa2d.jpg'),
+  track('Anything You Want - Reality Club', 'Anything You Want', 'Reality Club', 'https://i.pinimg.com/736x/0a/4f/c0/0a4fc071ad776463d8969fd24e139b7c.jpg '),
+  track('BenarSalah_HanyalahSalahDNANDA', 'Benar Salah, Hanyalah Salah', 'DNANDA', 'https://i.scdn.co/image/ab67616d00001e021e946eea09f05c1d9650cf08 '),
+  track('Berdansalah_ Karir Ini Tak Ada Artinya - Hindia', 'Berdansalah, Karir Ini Tak Ada Artinya', 'Hindia', 'https://i.pinimg.com/736x/d7/da/eb/d7daeb2732852b4355937621877ece2e.jpg '),
+  track('Bersenja Gurau - Raim Laode', 'Bersenja Gurau', 'Raim Laode', 'https://i.pinimg.com/736x/68/69/7b/68697ba4c90fa7161ed28869a0a3b784.jpg '),
+  track('BertautNadinAmizah', 'Bertaut', 'Nadin Amizah', 'https://i.pinimg.com/736x/3a/0a/27/3a0a270bc612da1a70e540e2982f0d5a.jpg'),
+  track('BesokMungkinKitaSampaiHindia', 'Besok Mungkin Kita Sampai', 'Hindia', 'https://i.pinimg.com/736x/79/20/4c/79204c1d93ded6f5f759b37a369b917a.jpg'),
+  track('BiangLaraPerunggu', 'Biang Lara', 'Perunggu', 'https://i.pinimg.com/736x/64/41/26/644126693da59ec6a4102452e2ffac73.jpg '),
+  track('BungaAbadiRioClappy', 'Bunga Abadi', 'Rio Clappy', 'https://i.pinimg.com/736x/5c/67/b3/5c67b3c798fae55e48e43c9ed563174a.jpg '),
+  track('DiUjungJalanSAMSONS', 'Di Ujung Jalan', 'SAMSONS', 'https://cdn.antaranews.com/cache/1200x800/2022/03/10/Photo-SamSonS_clean.jpg '),
+  track('everythinguareHindia', 'everything u are', 'Hindia', 'https://i.pinimg.com/736x/b3/40/20/b3402010632f29e3aab09c0c97dcc0be.jpg '),
+  track('GemilangPerunggu', 'Gemilang', 'Perunggu', ' https://i.pinimg.com/1200x/e4/5d/8a/e45d8ac6d88a23d4ee262375d8cb1760.jpg'),
+  track('HanyaUntukMuTen2Five', 'Hanya Untuk-Mu', 'Ten2Five', 'https://i.pinimg.com/1200x/2b/63/86/2b63861f82ceb227c24552207ab1f480.jpg '),
+  track('I_dliketowatchyousleepingSalPriadi', "I'd like to watch you sleeping", 'Sal Priadi', 'https://i.pinimg.com/736x/4f/e4/05/4fe40576dd99fee602f6a62986e2c378.jpg '),
+  track('IniAbadiPerunggu', 'Ini Abadi', 'Perunggu', 'https://i.pinimg.com/736x/f8/44/e7/f844e775d67e8f91edf37c2bd653894c.jpg '),
+  track('JanganPernahBerubahMarcell', 'Jangan Pernah Berubah', 'Marcell', 'https://i.pinimg.com/736x/08/a7/ed/08a7ed15de42a22ce121a21af37098c5.jpg '),
+  track('JatuhSukaTulus', 'Jatuh Suka', 'Tulus', ' https://i.pinimg.com/1200x/0e/c5/90/0ec5907ea949af59e0cb30274454f6f8.jpg'),
+  track('Kalibata_ 2012Perunggu', 'Kalibata, 2012', 'Perunggu', 'https://i.pinimg.com/736x/0a/c4/a1/0ac4a185f4e74d7da4dec39b7c7cb9d9.jpg '),
+  track('KauPemeranUtamadiSebuahOperaThe Jansen', 'Kau Pemeran Utama di Sebuah Opera', 'The Jansen', 'https://i.pinimg.com/1200x/34/23/50/342350ba0e2c5849bee95f127b4af6b6.jpg '),
+  track('KauRumahkuraissaanggiani', 'Kau Rumahku', 'raissa anggiani', 'https://i.pinimg.com/736x/75/39/ac/7539ac95b77e3abff866d8b46d0b22ac.jpg '),
+  track('KebutuhanHatiKaleb J', 'Kebutuhan Hati', 'Kaleb J', 'https://i.pinimg.com/1200x/54/0d/7d/540d7d718cce7d1f9111b9113961b5e0.jpg '),
+  track('kitaKeSanaHindia', 'Kita Ke Sana', 'Hindia', 'https://i.pinimg.com/736x/0b/e2/e8/0be2e8b5f9b46df3354fdd8916a3c498.jpg'),
+  track('Lihat_Kebunku _Taman Bunga_Aku_Jeje', 'Lihat Kebunku (Taman Bunga)', 'Aku Jeje', 'https://i.pinimg.com/736x/68/f0/2d/68f02d4323294c1c3acee93d88b1d53e.jpg '),
+  track('MantanTerindahKahitna', 'Mantan Terindah', 'Kahitna', 'https://i.pinimg.com/1200x/bd/74/90/bd74909adcb10596426495720046d1c0.jpg '),
+  track('MasihAdaKamuWijaya 80', 'Masih Ada Kamu', 'Wijaya 80', ' https://i.pinimg.com/736x/ec/88/a1/ec88a132df3ecf9e714e7226910eefa5.jpg'),
+  track('MesramesraannyakecilkecilanduluSal Priadi', 'Mesra-mesraannya kecil-kecilan dulu', 'Sal Priadi', 'https://i.pinimg.com/1200x/52/85/65/528565e3716788e976254d9b186be4e6.jpg '),
+  track('MonokromTulus', 'Monokrom', 'Tulus', 'https://i.pinimg.com/736x/cd/11/69/cd1169ce1e214f1412095b486da83530.jpg '),
+  track('NinaFeast', 'Nina', '.Feast', 'https://i.pinimg.com/736x/cc/19/c1/cc19c1f36ddec07c4a458c8e5e724d61.jpg '),
+  track('o_TuanFeast', 'o, Tuan', '.Feast', ' https://i.pinimg.com/736x/58/c0/5e/58c05e710ab1f8a25ee7f049059218cf.jpg'),
+  track('PastikanRiuhAkhiriMalammuPerunggu', 'Pastikan Riuh Akhiri Malammu', 'Perunggu', 'https://i.pinimg.com/736x/91/99/be/9199be580ce0b01127644dd27c69acf5.jpg '),
+  track('PikiranYangMatangPerunggu', 'Pikiran Yang Matang', 'Perunggu', 'https://i.pinimg.com/736x/30/9d/c9/309dc9b69947be93d780b0da3ded15b9.jpg '),
+  track('RasakanNikmatnyaHidupHindia', 'Rasakan Nikmatnya Hidup', 'Hindia', 'https://i.pinimg.com/736x/79/a2/22/79a2229f87958cbc80714c82aa64259e.jpg '),
+  track('ResahPayungTeduh', 'Resah', 'Payung Teduh', 'https://i.pinimg.com/1200x/dd/76/17/dd761742e5887bd371ac98751dc39c47.jpg '),
+  track('RuangBaruBarsenaBestandhi', 'Ruang Baru (From "My Annoying Brother")', 'Barsena Bestandhi', 'https://i.pinimg.com/736x/4d/a2/01/4da2013625920f3d3f09299d065b9b03.jpg '),
+  track('RuntuhFebyPutri', 'Runtuh', 'Feby Putri', 'https://i.pinimg.com/736x/4b/1d/2a/4b1d2a9c678bb2f42dab2f4f024ae963.jpg '),
+  track('SandiwaraSemurumahsakit', 'Sandiwara Semu', 'rumahsakit', 'https://i.pinimg.com/736x/86/fb/d9/86fbd90ee31db32182a1af2c063f6861.jpg'),
+  track('Secukupnya_Hindia', 'Secukupnya', 'Hindia', 'https://i.pinimg.com/1200x/17/12/5f/17125f5b92b0743646b5aded4a24969f.jpg '),
+  track('Segalanya_Itu_Kamu_David Bayu', 'Segalanya Itu Kamu', 'David Bayu', 'https://i.pinimg.com/1200x/d8/af/f8/d8aff8e5bfbcfd8b27df2d6b364def37.jpg '),
+  track('Semoga_ Ya_Nosstress', 'Semoga, Ya', 'Nosstress', 'https://i.pinimg.com/1200x/25/e9/47/25e9474cd1c16906cb0647855571b80d.jpg '),
+  track('semualagucintaterdengarsama_Hindia', 'semua lagu cinta terdengar sama', 'Hindia', 'https://i.pinimg.com/736x/66/c0/97/66c097fafc1aa84a8c1db113fd0fcd28.jpg '),
+  track('Setapak_Sriwedari_MALIQ _ D_Essentials', 'Setapak Sriwedari', "MALIQ & D'Essentials", 'https://i.pinimg.com/736x/8c/b0/b5/8cb0b5236cac864406ec8669e4f81330.jpg '),
+  track('Sorai_Nadin_Amizah', 'Sorai', 'Nadin Amizah', 'https://i.pinimg.com/1200x/e4/30/71/e4307158bc1c388546dc04473f3dd7eb.jpg '),
+  track('soulmate_Kahitna', 'Soulmate', 'Kahitna', 'https://i.pinimg.com/736x/e6/81/6c/e6816c62e98c8f60bcb3321bf7a8fa2d.jpg '),
+  track('Sssst_Sore', 'Sssst...', 'Sore', 'https://i.scdn.co/image/ab67616d0000b2733e942e1e018e520daa28141d '),
+  track('Tarot_Feast', 'Tarot', '.Feast', 'https://i.pinimg.com/736x/14/44/27/144427b6406aea63c6cc5bf17125c198.jpg '),
+  track('Terakhir_Kali_Wijaya 80', 'Terakhir Kali', 'Wijaya 80', 'https://i.pinimg.com/736x/39/d9/f9/39d9f971406ce2d5b62fbb102e472327.jpg '),
+  track('TerbuangDalamWaktuBarasuara', 'Terbuang Dalam Waktu', 'Barasuara', 'https://i.pinimg.com/1200x/01/f9/9f/01f99fa1f605c027b99c1a3de22feb80.jpg'),
+  track('Timur_The_Adams', 'Timur', 'The Adams', 'https://i.pinimg.com/1200x/d0/d3/2f/d0d32fae75fbcf105abc3a6df0af9240.jpg '),
+  track('Untitled_MALIQ _ D_Essentials', 'Untitled', "MALIQ & D'Essentials", 'https://i.pinimg.com/736x/b6/aa/48/b6aa48621914f7d6b0002537558a41a3.jpg '),
+  track('Untuk _Perempuan_Yang_Sedang_Dalam_Pelukan_PayungTeduh', 'Untuk Perempuan Yang Sedang Dalam Pelukan (Live)', 'Payung Teduh', 'https://i.pinimg.com/736x/03/47/5d/03475d95688759588c43ec9a280b6966.jpg '),
 ];

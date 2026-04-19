@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useEasterEgg } from '../context/EasterEggContext';
@@ -13,14 +12,14 @@ const Footer: React.FC = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const linkVariants = {
@@ -28,8 +27,8 @@ const Footer: React.FC = () => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.4 }
-    }
+      transition: { duration: 0.4 },
+    },
   };
 
   const loopTextVariants = {
@@ -38,9 +37,9 @@ const Footer: React.FC = () => {
       transition: {
         delay: i * 0.08,
         duration: 3,
-        repeat: Infinity
-      }
-    })
+        repeat: Infinity,
+      },
+    }),
   };
 
   return (
@@ -51,9 +50,13 @@ const Footer: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
         >
-          <motion.div className="col-span-2" variants={itemVariants} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <motion.div
+            className="col-span-2"
+            variants={itemVariants}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             <motion.h2
               className="text-4xl font-display mb-6 uppercase text-black dark:text-white"
               initial={{ opacity: 0, y: 20 }}
@@ -71,16 +74,14 @@ const Footer: React.FC = () => {
               transition={{ delay: 0.2 }}
             >
               Dafin Mu'tashim (
-              <span
-                onClick={triggerEasterEgg}
-                className="cursor-default inline"
-              >
+              <span onClick={triggerEasterEgg} className="cursor-default inline">
                 Apin
               </span>
-              ) is a detail-oriented operations professional focused on efficient logistics management and accurate data administration.
+              ) is a detail-oriented operations professional focused on efficient logistics
+              management and accurate data administration.
             </motion.p>
           </motion.div>
-          <motion.div variants={itemVariants} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <motion.div variants={itemVariants} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <motion.h4
               className="font-bold text-sm tracking-widest uppercase mb-6 text-black dark:text-white"
               initial={{ opacity: 0, x: -20 }}
@@ -98,11 +99,11 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
             >
               {[
-                { href: "#home", label: "Home" },
-                { href: "#about", label: "About" },
-                { href: "#experience", label: "Experience" },
-                { href: "#skills", label: "Skills" },
-                { href: "#contact", label: "Contact" }
+                { href: '#home', label: 'Home' },
+                { href: '#about', label: 'About' },
+                { href: '#experience', label: 'Experience' },
+                { href: '#skills', label: 'Skills' },
+                { href: '#contact', label: 'Contact' },
               ].map((link) => (
                 <motion.li key={link.href} variants={linkVariants}>
                   <motion.a
@@ -116,7 +117,7 @@ const Footer: React.FC = () => {
               ))}
             </motion.ul>
           </motion.div>
-          <motion.div variants={itemVariants} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <motion.div variants={itemVariants} transition={{ duration: 0.6, ease: 'easeOut' }}>
             <motion.h4
               className="font-bold text-sm tracking-widest uppercase mb-6 text-black dark:text-white"
               initial={{ opacity: 0, x: -20 }}
@@ -134,12 +135,14 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
             >
               {[
-                { href: "https://www.instagram.com/_apins2/", label: "Instagram" },
-                { href: "https://tiktok.com/@_apins_/", label: "TikTok" },
-                { href: "https://www.linkedin.com/in/dafin-mu-tashim-277519308/", label: "LinkedIn" },
-                { href: "https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE", label: "YouTube" },
-                { href: "https://id.quora.com/profile/Dafin-Mutashim", label: "Qoura" }
-
+                { href: 'https://www.instagram.com/_apins2/', label: 'Instagram' },
+                { href: 'https://tiktok.com/@_apins_/', label: 'TikTok' },
+                {
+                  href: 'https://www.linkedin.com/in/dafin-mu-tashim-277519308/',
+                  label: 'LinkedIn',
+                },
+                { href: 'https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE', label: 'YouTube' },
+                { href: 'https://id.quora.com/profile/Dafin-Mutashim', label: 'Qoura' },
               ].map((social) => (
                 <motion.li key={social.label} variants={linkVariants}>
                   <motion.a
@@ -164,10 +167,10 @@ const Footer: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.p variants={itemVariants} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <motion.p variants={itemVariants} transition={{ duration: 0.6, ease: 'easeOut' }}>
             © {currentYear}{' '}
             <span>
-              {('Dafin Mu\'tashim').split('').map((char, i) => (
+              {"Dafin Mu'tashim".split('').map((char, i) => (
                 <motion.span
                   key={i}
                   custom={i}

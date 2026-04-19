@@ -7,7 +7,6 @@ interface SkillProjectsProps {
 }
 
 const SkillProjects: React.FC<SkillProjectsProps> = ({ skill }) => {
-
   return <ExpandableCardContainer skill={skill} />;
 };
 

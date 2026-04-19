@@ -1,36 +1,17 @@
-
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { GraduationCap, Award, BookOpen } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useScrollVisibility } from '../hooks/useScrollAnimation';
 import { EDUCATION_DATA } from '../data';
 import PageBackground from '../components/PageBackground';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { PAGE_BACKGROUNDS } from '../config/pageBackgrounds';
 
 const About: React.FC = () => {
   const { isDark } = useTheme();
   const { opacity } = useScrollVisibility();
   const backgroundUrl = isDark ? PAGE_BACKGROUNDS.about.dark : PAGE_BACKGROUNDS.about.light;
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const sectionY = useTransform(scrollYProgress, [0, 1], [80, -80]);
-  const sectionOpacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0.95]);
-  const headingY = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const cardY = useTransform(scrollYProgress, [0, 1], [50, -40]);
-  const imageParallax = useTransform(scrollYProgress, [0, 1], [10, -10]);
-  const eduCardY = useTransform(scrollYProgress, [0, 1], [20, -20]);
-
-  // Enhanced scroll animations
-  const leftContentRotate = useTransform(scrollYProgress, [0, 1], [0, -3]);
-  const rightContentRotate = useTransform(scrollYProgress, [0, 1], [0, 3]);
-  const backgroundOrb1Y = useTransform(scrollYProgress, [0, 1], [-30, 60]);
-  const backgroundOrb2Y = useTransform(scrollYProgress, [0, 1], [40, -70]);
-  const textScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.02, 0.98]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -48,8 +29,8 @@ const About: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 }
-    }
+      transition: { duration: 0.6 },
+    },
   };
 
   const aboutCardVariants = {
@@ -58,12 +39,15 @@ const About: React.FC = () => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.65, ease: 'easeOut' as any }
-    }
+      transition: { duration: 0.65, ease: 'easeOut' as any },
+    },
   };
 
   return (
-    <div ref={sectionRef} className={`relative bg-black py-32 px-6 min-h-screen transition-opacity duration-300`} style={{ opacity, transition: 'opacity 0.3s ease-out' }}>
+    <div
+      className={`relative bg-black py-32 px-6 min-h-screen transition-opacity duration-300`}
+      style={{ opacity, transition: 'opacity 0.3s ease-out' }}
+    >
       <PageBackground url={backgroundUrl} />
 
       {/* Animated Background Elements */}
@@ -73,20 +57,18 @@ const About: React.FC = () => {
           animate={{
             y: [0, 40, 0],
             x: [0, 30, 0],
-            rotate: [0, 120, 240, 360]
+            rotate: [0, 120, 240, 360],
           }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ y: backgroundOrb1Y }}
         />
         <motion.div
           className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-purple-600/8 blur-3xl"
           animate={{
             y: [0, -50, 0],
             x: [0, -40, 0],
-            rotate: [360, 240, 120, 0]
+            rotate: [360, 240, 120, 0],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ y: backgroundOrb2Y }}
         />
       </div>
 
@@ -96,15 +78,33 @@ const About: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          style={{ y: sectionY, opacity: sectionOpacity }}
+          viewport={{ once: true, margin: '-100px' }}
         >
-          <motion.div className="flex flex-col justify-center" style={{ y: headingY, rotate: leftContentRotate, scale: textScale }}>
-            <motion.span variants={itemVariants} className="text-xs font-bold tracking-[0.3em] text-zinc-400 dark:text-zinc-500 uppercase mb-4 block">ABOUT ME</motion.span>
-            <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-display mb-8 text-white">DRIVING EFFICIENCY IN LOGISTICS & OPERATIONS</motion.h1>
-            <motion.div variants={containerVariants} className="space-y-6 text-zinc-400 leading-relaxed text-lg" style={{ opacity: sectionOpacity }}>
+          <motion.div className="flex flex-col justify-center">
+            <motion.span
+              variants={itemVariants}
+              className="text-xs font-bold tracking-[0.3em] text-zinc-400 dark:text-zinc-500 uppercase mb-4 block"
+            >
+              ABOUT ME
+            </motion.span>
+            <motion.h1
+              variants={itemVariants}
+              className="text-6xl md:text-8xl font-display mb-8 text-white"
+            >
+              DRIVING EFFICIENCY IN LOGISTICS & OPERATIONS
+            </motion.h1>
+            <motion.div
+              variants={containerVariants}
+              className="space-y-6 text-zinc-400 leading-relaxed text-lg"
+            >
               <motion.p variants={itemVariants}>
-                I am a Computer and Network Engineering graduate with a strong focus on logistics and warehouse operations. With hands-on experience in sales administration and inventory management for online retail, I am highly proficient in recording transactions, picking and packing, and ensuring product accuracy before shipment. I am a detail-oriented, disciplined team player committed to supporting smooth distribution workflows through efficient data management and time-sensitive operations.
+                I am a Computer and Network Engineering graduate with a strong focus on logistics
+                and warehouse operations. With hands-on experience in sales administration and
+                inventory management for online retail, I am highly proficient in recording
+                transactions, picking and packing, and ensuring product accuracy before shipment. I
+                am a detail-oriented, disciplined team player committed to supporting smooth
+                distribution workflows through efficient data management and time-sensitive
+                operations.
               </motion.p>
             </motion.div>
           </motion.div>
@@ -115,16 +115,14 @@ const About: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            style={{ y: cardY, rotate: rightContentRotate }}
           >
             <motion.div
               variants={aboutCardVariants}
               className="bg-zinc-800 dark:bg-zinc-800 rounded-[2rem] lg:aspect-square h-32 lg:h-auto overflow-hidden relative group"
-              whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
-              style={{ y: imageParallax }}
+              whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
             >
               <img
-                src="/img/StudioGhibli.gif"
+                src="img/StudioGhibli.gif"
                 alt="Award Winner"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -132,26 +130,25 @@ const About: React.FC = () => {
             <motion.div
               variants={aboutCardVariants}
               className="bg-black dark:bg-white text-white dark:text-black rounded-[2rem] p-6 md:p-8 lg:aspect-square h-32 lg:h-auto flex flex-col justify-end"
-              whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}
-              style={{ y: imageParallax }}
+              whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}
             >
-              <motion.div
-                className="mb-3 md:mb-4 w-12 md:w-20 h-12 md:h-20"
-              >
-                <img
-                  src="/img/giphy.gif"
-                  alt="Continuous Learning GIF"
-                  className="w-full h-full object-contain"
+              <motion.div className="mb-4 md:mb-5 w-20 md:w-28 h-20 md:h-28 translate-y-[61px]">
+                <DotLottieReact
+                  src="https://lottie.host/adc2f2fe-c868-406b-9851-077333d16cd1/pirKpHVawr.lottie"
+                  loop
+                  autoplay
+                  className="w-full h-full"
                 />
               </motion.div>
               <h4 className="font-bold text-lg md:text-xl">Continuous Learning</h4>
-              <p className="text-xs md:text-sm text-zinc-400 dark:text-zinc-600">Supply chain and inventory systems</p>
+              <p className="text-xs md:text-sm text-zinc-400 dark:text-zinc-600">
+                Supply chain and inventory systems
+              </p>
             </motion.div>
             <motion.div
               variants={aboutCardVariants}
               className="col-span-2 bg-blue-950 rounded-[2rem] p-10 h-64 overflow-hidden relative group"
               whileHover={{ scale: 1.03 }}
-              style={{ y: imageParallax }}
             >
               <img
                 src="https://i.pinimg.com/736x/98/b6/ac/98b6ac5ca5706d58d748db6479527427.jpg"
@@ -170,27 +167,30 @@ const About: React.FC = () => {
           className="bg-zinc-900 rounded-[3rem] p-8 md:p-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8 }}
-          style={{ y: eduCardY, opacity: sectionOpacity }}
         >
           <motion.div
             className="flex items-center gap-4 mb-16"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{ y: headingY }}
           >
             <motion.div
               variants={itemVariants}
               className="w-12 h-12 bg-zinc-800 rounded-2xl flex items-center justify-center shadow-sm text-white"
               whileHover={{ rotate: 10 }}
               animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             >
               <GraduationCap size={24} />
             </motion.div>
-            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-display text-white">Academic Journey</motion.h2>
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl md:text-5xl font-display text-white"
+            >
+              Academic Journey
+            </motion.h2>
           </motion.div>
 
           <motion.div
@@ -199,7 +199,6 @@ const About: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            style={{ y: eduCardY }}
           >
             {EDUCATION_DATA.map((edu, index) => (
               <motion.div
@@ -221,9 +220,7 @@ const About: React.FC = () => {
                     {edu.period}
                   </motion.span>
                 </div>
-                <p className="text-zinc-400 leading-relaxed max-w-3xl">
-                  {edu.description}
-                </p>
+                <p className="text-zinc-400 leading-relaxed max-w-3xl">{edu.description}</p>
               </motion.div>
             ))}
           </motion.div>

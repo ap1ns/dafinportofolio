@@ -13,11 +13,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.body.classList.add('dark');
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ isDark: true }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ isDark: true }}>{children}</ThemeContext.Provider>;
 };
 
 export const useTheme = () => {

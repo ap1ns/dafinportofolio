@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import {
+  DEFAULT_LOADING_DURATION,
+  LOADING_COMPLETE_DELAY,
+  PROGRESS_UPDATE_INTERVAL,
+  START_BUTTON_DELAY,
+  ANIMATION,
+  SCALE,
+  PROGRESS,
+  EASING,
+  HOVER,
+  IMAGE_OFFSETS,
+  OPACITY,
+  ANIMATION_SPEED,
+} from '../constants/loadingScreenConstants';
 
 interface LoadingScreenProps {
   duration?: number;
@@ -21,13 +35,13 @@ const getSimulatedProgress = (elapsedTime: number, duration: number): number => 
 };
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({
-  duration = 3500,
+  duration = DEFAULT_LOADING_DURATION,
   onComplete,
   isLoading = true,
   backgroundUrl = 'https://i.pinimg.com/originals/d0/62/a0/d062a054db706da542a505e96bd851b8.gif', // Default: empty string (use default bg)
   onStart,
   onStartWithoutMusic,
-  hasStarted = false
+  hasStarted = false,
 }) => {
   const [isVisible, setIsVisible] = useState(isLoading);
   const [progress, setProgress] = useState(0);
@@ -40,7 +54,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       return;
     }
 
-    // Sebelum user klik "Click to start", jangan mulai proses loading / progress
+    // Before user clicks "Click to start", don't start loading/progress
     if (!hasStarted) {
       setIsVisible(true);
       setProgress(0);
@@ -52,65 +66,44 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
     const startTime = Date.now();
 
     const completeLoading = () => {
-      setProgress(100);
+      setProgress(100); // Ensure progress is exactly 100%
       const finalTimer = setTimeout(() => {
         setIsVisible(false);
         if (onComplete) {
           onComplete();
         }
-      }, 500);
+      }, LOADING_COMPLETE_DELAY);
       return () => clearTimeout(finalTimer);
     };
 
-    // Ensure minimum duration
+    // Ensure minimum duration - simplified logic
     const minDurationTimer = setTimeout(() => {
       minDurationMet = true;
-      // If window already loaded, complete immediately
-      if (windowLoaded) {
-        completeLoading();
-      }
+      completeLoading(); // Complete regardless of window load status
     }, duration);
-
-    // Track when window fully loads
-    const handleWindowLoad = () => {
-      windowLoaded = true;
-      // Only complete if minimum duration is already met
-      if (minDurationMet) {
-        completeLoading();
-      }
-    };
 
     // Update progress bar smoothly
     const progressInterval = setInterval(() => {
       const elapsedTime = Date.now() - startTime;
       const simulatedProgress = getSimulatedProgress(elapsedTime, duration);
-      setProgress(simulatedProgress);
-    }, 50);
-
-    // Listen for actual window load event
-    if (document.readyState === 'complete') {
-      windowLoaded = true;
-      // Don't complete yet, wait for minimum duration
-    } else {
-      window.addEventListener('load', handleWindowLoad);
-    }
+      setProgress(prevProgress => Math.max(prevProgress, simulatedProgress));
+    }, PROGRESS_UPDATE_INTERVAL);
 
     return () => {
       clearInterval(progressInterval);
       clearTimeout(minDurationTimer);
-      window.removeEventListener('load', handleWindowLoad);
     };
   }, [duration, onComplete, isLoading, hasStarted]);
 
   const containerVariants: Variants = {
     visible: {
       opacity: 1,
-      transition: { duration: 0.4 }
+      transition: { duration: ANIMATION.CONTAINER_FADE },
     },
     exit: {
       opacity: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
-    }
+      transition: { duration: ANIMATION.CONTAINER_EXIT, ease: 'easeOut' },
+    },
   };
 
   const textVariants: Variants = {
@@ -119,11 +112,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.2 + i * 0.15,
-        duration: 0.7,
-        ease: "easeOut"
-      }
-    })
+        delay: ANIMATION.TEXT_INITIAL_DELAY + i * ANIMATION.TEXT_DELAY_INCREMENT,
+        duration: ANIMATION.TEXT_FADE_IN,
+        ease: 'easeOut',
+      },
+    }),
   };
 
   const lineVariants: Variants = {
@@ -132,11 +125,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       scaleX: 1,
       opacity: 1,
       transition: {
-        delay: 0.8,
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        delay: ANIMATION.LINE_DELAY,
+        duration: ANIMATION.LINE_DURATION,
+        ease: 'easeOut',
+      },
+    },
   };
 
   return (
@@ -179,24 +172,24 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-200 dark:bg-blue-600 blur-3xl"
                 animate={{
                   scale: [1, 1.2, 1],
-                  opacity: [0.1, 0.15, 0.1]
+                  opacity: [OPACITY.ORB_LIGHT, OPACITY.ORB_LIGHT_ANIMATED, OPACITY.ORB_LIGHT],
                 }}
                 transition={{
-                  duration: 8,
+                  duration: ANIMATION_SPEED.ORB_BLUE_DURATION,
                   repeat: Infinity,
-                  ease: 'easeInOut'
+                  ease: 'easeInOut',
                 }}
               />
               <motion.div
                 className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-200 dark:bg-purple-600 blur-3xl"
                 animate={{
                   scale: [1.2, 1, 1.2],
-                  opacity: [0.1, 0.15, 0.1]
+                  opacity: [OPACITY.ORB_DARK, OPACITY.ORB_DARK_ANIMATED, OPACITY.ORB_DARK],
                 }}
                 transition={{
-                  duration: 10,
+                  duration: ANIMATION_SPEED.ORB_PURPLE_DURATION,
                   repeat: Infinity,
-                  ease: 'easeInOut'
+                  ease: 'easeInOut',
                 }}
               />
             </div>
@@ -247,15 +240,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
+                  transition={{ delay: START_BUTTON_DELAY, duration: 0.5 }}
                   className="mt-6 flex flex-col gap-3 justify-center items-center"
                 >
                   {!showOptions ? (
                     <motion.button
                       type="button"
-                      onClick={() => setShowOptions(true)}
-                      whileTap={{ scale: 0.92 }}
-                      whileHover={{ scale: 1.05 }}
+                      onClick={(onStartWithoutMusic)}
+                      whileTap={{ scale: HOVER.BUTTON_SCALE }}
+                      whileHover={{ scale: HOVER.ICON_SCALE }}
                       className="px-6 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black text-xs md:text-sm font-semibold tracking-wide uppercase shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       Open to Start
@@ -278,35 +271,36 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                       </motion.p>
 
                       {/* Icons Container */}
-                      <div className="flex gap-8 justify-center items-end">
+                      <div className="flex gap-3 justify-center items-end">
                         {/* With Music Icon */}
                         {onStart && (
                           <motion.div
-                            className="flex flex-col items-center gap-2 cursor-pointer"
+                            className="flex flex-col items-center gap-0 cursor-pointer"
                             onClick={onStart}
                             onHoverStart={() => setHoveredIcon('withMusic')}
                             onHoverEnd={() => setHoveredIcon(null)}
-                            whileHover={{ y: -5 }}
-                            whileTap={{ scale: 0.95 }}
+                            whileHover={{ y: HOVER.Y_OFFSET }}
+                            whileTap={{ scale: HOVER.SCALE_DOWN }}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
                           >
                             <motion.div
-                              className="p-3 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300"
-                              whileHover={{ scale: 1.1 }}
+                              className="h-[130px] flex items-end justify-center"
+                              whileHover={{ scale: HOVER.SCALE_UP }}
                             >
                               <img
-                                src="/img/unmute.svg"
+                                src="icons/music.png"
                                 alt="With Music"
-                                className="w-12 h-12"
+                                className="grayscale hover:grayscale-0 transition duration-300 w-[130px] h-[130px] object-contain block"
+                                style={{ transform: `translateY(${IMAGE_OFFSETS.WITH_MUSIC_Y}px)` }}
                               />
                             </motion.div>
                             <motion.div
                               initial={{ opacity: 0 }}
                               animate={{ opacity: hoveredIcon === 'withMusic' ? 1 : 0 }}
                               transition={{ duration: 0.2 }}
-                              className="text-xs font-semibold text-black dark:text-white text-center"
+                              className="-mt-8 text-xs  leading-none font-semibold text-black dark:text-white text-center"
                             >
                               With Music
                             </motion.div>
@@ -316,31 +310,34 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                         {/* Without Music Icon */}
                         {onStartWithoutMusic && (
                           <motion.div
-                            className="flex flex-col items-center gap-2 cursor-pointer"
+                            className="flex flex-col items-center gap-[8] cursor-pointer"
                             onClick={onStartWithoutMusic}
                             onHoverStart={() => setHoveredIcon('withoutMusic')}
                             onHoverEnd={() => setHoveredIcon(null)}
-                            whileHover={{ y: -5 }}
-                            whileTap={{ scale: 0.95 }}
+                            whileHover={{ y: HOVER.Y_OFFSET }}
+                            whileTap={{ scale: HOVER.SCALE_DOWN }}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
                           >
                             <motion.div
-                              className="p-3 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300"
-                              whileHover={{ scale: 1.1 }}
+                              className="h-[130px] flex items-end justify-center"
+                              whileHover={{ scale: HOVER.SCALE_UP }}
                             >
                               <img
-                                src="/img/mute.svg"
+                                src="icons/nomusic.png"
                                 alt="Without Music"
-                                className="w-12 h-12"
+                                className="grayscale hover:grayscale-0 transition duration-300 w-[110px] h-[110px] object-contain block"
+                                style={{
+                                  transform: `translateY(${IMAGE_OFFSETS.WITHOUT_MUSIC_Y}px)`,
+                                }}
                               />
                             </motion.div>
                             <motion.div
                               initial={{ opacity: 0 }}
                               animate={{ opacity: hoveredIcon === 'withoutMusic' ? 1 : 0 }}
                               transition={{ duration: 0.2 }}
-                              className="text-xs font-semibold text-black dark:text-white text-center"
+                              className="-mt-8 text-xs  leading-none font-semibold text-black dark:text-white text-center"
                             >
                               Without Music
                             </motion.div>
@@ -352,7 +349,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 </motion.div>
               )}
 
-              {/* Progress Section - hanya muncul setelah user klik "Click to start" */}
+              {/* Progress Section - only appears after user clicks "Click to start" */}
               {hasStarted && (
                 <motion.div
                   className="mt-16 w-full max-w-xs mx-auto"
@@ -366,7 +363,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                       className="absolute top-0 left-0 h-full bg-black dark:bg-white"
                       style={{
                         width: `${progress}%`,
-                        transition: 'width 0.08s cubic-bezier(0.22, 1, 0.36, 1)'
+                        transition: `width ${ANIMATION.PROGRESS_BAR_TRANSITION}s cubic-bezier(${EASING.SMOOTH_PROGRESS.join(', ')})`,
                       }}
                     />
                   </div>
@@ -375,9 +372,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                   <motion.div
                     className="mt-6 text-center"
                     animate={{
-                      opacity: progress < 98 ? 1 : 0
+                      opacity: progress < PROGRESS.SHOW_PERCENTAGE_THRESHOLD ? 1 : 0,
                     }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: ANIMATION.PROGRESS_OPACITY_TRANSITION }}
                   >
                     <p className="text-xs font-medium text-black/30 dark:text-white/30 tracking-widest uppercase">
                       {Math.round(progress)} %
@@ -392,13 +389,17 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
               <motion.div
                 className="absolute bottom-8 left-1/2 -translate-x-1/2"
                 animate={{
-                  opacity: [0.3, 0.6, 0.3],
-                  y: [0, 8, 0]
+                  opacity: [
+                    OPACITY.BOTTOM_INDICATOR_MIN,
+                    OPACITY.BOTTOM_INDICATOR_MAX,
+                    OPACITY.BOTTOM_INDICATOR_MIN,
+                  ],
+                  y: [0, 8, 0],
                 }}
                 transition={{
-                  duration: 2.5,
+                  duration: ANIMATION.BOTTOM_INDICATOR_DURATION,
                   repeat: Infinity,
-                  ease: 'easeInOut'
+                  ease: 'easeInOut',
                 }}
               >
                 <div className="flex gap-1 justify-center">
@@ -407,13 +408,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                       key={i}
                       className="w-1 h-1 rounded-full bg-black/40 dark:bg-white/40"
                       animate={{
-                        scale: [1, 1.4, 1]
+                        scale: [SCALE.DOT_MIN, SCALE.DOT_MAX, SCALE.DOT_MIN],
                       }}
                       transition={{
-                        duration: 1.8,
-                        delay: i * 0.25,
+                        duration: ANIMATION.DOT_ANIMATION_DURATION,
+                        delay: i * ANIMATION.DOT_DELAY_INCREMENT,
                         repeat: Infinity,
-                        ease: 'easeInOut'
+                        ease: 'easeInOut',
                       }}
                     />
                   ))}

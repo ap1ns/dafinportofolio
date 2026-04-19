@@ -10,7 +10,11 @@ interface ProjectsProps {
   onSkillChange?: (skillId: string) => void;
 }
 
-const Projects: React.FC<ProjectsProps> = ({ showHeader = true, activeSkillId: propActiveSkillId, onSkillChange }) => {
+const Projects: React.FC<ProjectsProps> = ({
+  showHeader = true,
+  activeSkillId: propActiveSkillId,
+  onSkillChange,
+}) => {
   const { isDark } = useTheme();
   const [activeSkillId, setActiveSkillId] = useState(propActiveSkillId || SKILLS_DATA[0]?.id || '');
 
@@ -22,7 +26,7 @@ const Projects: React.FC<ProjectsProps> = ({ showHeader = true, activeSkillId: p
     onSkillChange?.(skillId);
   };
 
-  const activeSkill = SKILLS_DATA.find(skill => skill.id === effectiveSkillId);
+  const activeSkill = SKILLS_DATA.find((skill) => skill.id === effectiveSkillId);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -62,7 +66,9 @@ const Projects: React.FC<ProjectsProps> = ({ showHeader = true, activeSkillId: p
             className="mb-12 md:mb-16"
           >
             <motion.div variants={itemVariants}>
-              <h1 className={`text-4xl md:text-5xl lg:text-6xl font-display font-black mb-4 ${isDark ? 'text-white' : 'text-black'}`}>
+              <h1
+                className={`text-4xl md:text-5xl lg:text-6xl font-display font-black mb-4 ${isDark ? 'text-white' : 'text-black'}`}
+              >
                 My Projects
               </h1>
             </motion.div>
@@ -71,15 +77,14 @@ const Projects: React.FC<ProjectsProps> = ({ showHeader = true, activeSkillId: p
               variants={itemVariants}
               className={`text-lg md:text-xl ${isDark ? 'text-zinc-400' : 'text-zinc-600'} max-w-2xl`}
             >
-              Explore my work organized by skills and expertise. Each project represents my dedication to quality, creativity, and professional excellence.
+              Explore my work organized by skills and expertise. Each project represents my
+              dedication to quality, creativity, and professional excellence.
             </motion.p>
           </motion.div>
         )}
 
         {/* Active Skill Projects */}
-        {activeSkill && (
-          <SkillProjects skill={activeSkill} />
-        )}
+        {activeSkill && <SkillProjects skill={activeSkill} />}
 
         {/* Empty State */}
         {!activeSkill && (

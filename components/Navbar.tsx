@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
@@ -21,22 +20,17 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
   const { openPlaylist } = useAudio();
 
   const handleMusicPlayerClick = () => {
-    console.log('Music button clicked, onOpenPlaylist:', !!onOpenPlaylist, 'openPlaylist from context:', !!openPlaylist);
-
     if (onOpenPlaylist) {
-      console.log('Calling onOpenPlaylist from props');
       onOpenPlaylist();
       return;
     }
 
     if (openPlaylist) {
-      console.log('Calling openPlaylist from context');
       openPlaylist();
       return;
     }
 
-    console.log('Using legacy event fallback');
-    // Legacy fallback for event-based handling.
+    // Legacy fallback for event-based handling
     window.dispatchEvent(new CustomEvent('openPlaylist'));
 
     const anyWindow = window as any;
@@ -49,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const isHome = pathname === '/';
@@ -102,12 +96,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
   };
 
   const handleMobileNavClick = (href: string) => {
-    handleNavClick({ preventDefault: () => { } } as any, href);
+    handleNavClick({ preventDefault: () => {} } as any, href);
     setMobileMenuOpen(false);
   };
 
   return (
-    <div className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isModalOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isModalOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+    >
       <motion.div className="h-[2px] bg-black origin-left" style={{ scaleX }} />
 
       {/* Desktop Navigation */}
@@ -115,16 +111,24 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
         <motion.nav
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`flex items-center gap-1 px-2 py-1.5 md:py-2 rounded-2xl border transition-all duration-700 ${scrolled || !isHome
-            ? 'bg-zinc-900/80 backdrop-blur-2xl border-zinc-700 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
-            : 'bg-black/10 backdrop-blur-md border-white/10'
-            }`}
+          className={`flex items-center gap-1 px-2 py-1.5 md:py-2 rounded-2xl border transition-all duration-700 ${
+            scrolled || !isHome
+              ? 'bg-zinc-900/80 backdrop-blur-2xl border-zinc-700 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
+              : 'bg-black/10 backdrop-blur-md border-white/10'
+          }`}
         >
-          <Link to="/" className="group flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 mr-1 md:mr-2">
+          <Link
+            to="/"
+            className="group flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 mr-1 md:mr-2"
+          >
             <div className="w-7 h-7 md:w-8 md:h-8 bg-white rounded-lg flex items-center justify-center text-black font-display text-base md:text-lg group-hover:rotate-12 transition-transform">
               D
             </div>
-            <span className={`hidden sm:block text-[10px] font-black tracking-tighter transition-opacity text-white ${scrolled || !isHome ? 'opacity-100' : 'opacity-0'}`}>APIN.</span>
+            <span
+              className={`hidden sm:block text-[10px] font-black tracking-tighter transition-opacity text-white ${scrolled || !isHome ? 'opacity-100' : 'opacity-0'}`}
+            >
+              APIN.
+            </span>
           </Link>
 
           <div className="flex items-center gap-0.5 md:gap-1">
@@ -137,14 +141,15 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
                   key={item.href}
                   to={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-3 md:px-5 py-2 text-[9px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.25em] transition-all rounded-xl flex items-center justify-center ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-400'
-                    }`}
+                  className={`relative px-3 md:px-5 py-2 text-[9px] md:text-[10px] font-black tracking-[0.2em] md:tracking-[0.25em] transition-all rounded-xl flex items-center justify-center ${
+                    isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-400'
+                  }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="nav-glow"
                       className="absolute inset-0 bg-zinc-800/80 rounded-xl -z-10"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                     />
                   )}
                   {item.label}
@@ -153,7 +158,11 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
             })}
           </div>
 
-          <Link to="/#contact" onClick={(e) => handleNavClick(e, '/#contact')} className="px-4 md:px-5 py-2 md:py-2.5 bg-white text-black rounded-xl text-[9px] md:text-[10px] font-black tracking-[0.2em] hover:bg-zinc-200 transition-colors whitespace-nowrap">
+          <Link
+            to="/#contact"
+            onClick={(e) => handleNavClick(e, '/#contact')}
+            className="px-4 md:px-5 py-2 md:py-2.5 bg-white text-black rounded-xl text-[9px] md:text-[10px] font-black tracking-[0.2em] hover:bg-zinc-200 transition-colors whitespace-nowrap"
+          >
             HIRE
           </Link>
 
@@ -162,7 +171,6 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Button clicked directly');
               handleMusicPlayerClick();
             }}
             className="p-2.5 md:p-3 ml-1 md:ml-2 rounded-xl text-white hover:bg-zinc-800/50 transition-all hover:scale-110 group"
@@ -174,10 +182,13 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className={`md:hidden flex items-center justify-between px-4 py-3 mx-4 mt-4 rounded-2xl transition-all duration-700 ${scrolled || !isHome
-        ? 'bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]'
-        : 'bg-transparent border border-transparent'
-        }`}>
+      <div
+        className={`md:hidden flex items-center justify-between px-4 py-3 mx-4 mt-4 rounded-2xl transition-all duration-700 ${
+          scrolled || !isHome
+            ? 'bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]'
+            : 'bg-transparent border border-transparent'
+        }`}
+      >
         <Link to="/" className="group flex items-center gap-2">
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-black font-display text-base group-hover:rotate-12 transition-transform">
             D
@@ -214,8 +225,11 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
                     handleNavClick(e, item.href);
                     setMobileMenuOpen(false);
                   }}
-                  className={`relative px-4 py-3 text-sm font-black tracking-[0.15em] transition-all rounded-lg text-center ${isActive ? 'text-white bg-zinc-800' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
-                    }`}
+                  className={`relative px-4 py-3 text-sm font-black tracking-[0.15em] transition-all rounded-lg text-center ${
+                    isActive
+                      ? 'text-white bg-zinc-800'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  }`}
                 >
                   {item.label}
                 </Link>
@@ -237,7 +251,6 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenPlaylist }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Mobile button clicked directly');
                 handleMusicPlayerClick();
                 setMobileMenuOpen(false);
               }}

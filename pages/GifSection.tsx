@@ -11,7 +11,11 @@ const GifSection: React.FC = () => {
   const [gifUrl, setGifUrl] = useState<string>('');
 
   return (
-    <motion.section ref={sectionRef} className="transition-colors duration-300 bg-black" style={{ opacity: sectionOpacity, y: gifY }}>
+    <motion.section
+      ref={sectionRef}
+      className="transition-colors duration-300 bg-black"
+      style={{ opacity: sectionOpacity, y: gifY }}
+    >
       <div className="max-w-6xl mx-auto px-4 py-4">
         {/* GIF Container - Medium */}
         <div className="flex justify-center items-center">
@@ -20,8 +24,8 @@ const GifSection: React.FC = () => {
               className="w-32 md:w-64 rounded-xl overflow-hidden cursor-pointer"
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
               whileHover={{ scale: 1.08 }}
             >
               <motion.img

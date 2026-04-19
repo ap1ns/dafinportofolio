@@ -115,5 +115,3 @@ const ImageZoomModal: React.FC<ImageZoomModalProps> = ({ imageUrl, isOpen, onClo
 };
 
 export default ImageZoomModal;
-
-
