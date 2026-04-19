@@ -459,7 +459,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   aria-label="Close playlist"
                   className="group absolute top-3 right-3 sm:top-5 sm:right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white transition-all duration-300"
                 >
-                  <i class="fi fi-sr-left"></i>
+                  <i className="fi fi-sr-left"></i>
                 </a>
 
                 {/* Background Gradient Effect */}
