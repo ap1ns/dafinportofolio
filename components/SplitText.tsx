@@ -16,7 +16,7 @@ interface SplitTextProps {
   splitBy?: 'word' | 'char';
   /** Viewport margin to trigger earlier/later */
   margin?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
 }
 
 const SplitText: React.FC<SplitTextProps> = ({
