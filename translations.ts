@@ -223,6 +223,14 @@ export const translations = {
     projectComingSoon: "Project is coming soon",
     comingSoonSubtitle: "We're crafting something special. Stay tuned!",
 
+    // Loading Screen
+    loadingWelcome1: "Welcome",
+    loadingWelcome2: "to my",
+    loadingWelcome3: "portfolio",
+    loadingSubtitle: "Crafting digital experiences with code and creativity",
+    loadingSelectLang: "Select your language:",
+    loadingStart: "Open to Start",
+
   },
   id: {
     // Navigation
@@ -447,6 +455,14 @@ export const translations = {
     // Coming Soon Display
     projectComingSoon: "Proyek akan segera hadir",
     comingSoonSubtitle: "Kami sedang menyiapkan sesuatu yang spesial. Nantikan!",
+
+    // Loading Screen
+    loadingWelcome1: "Selamat Datang",
+    loadingWelcome2: "di",
+    loadingWelcome3: "Portofolio Saya",
+    loadingSubtitle: "Merancang pengalaman digital dengan kode dan kreativitas",
+    loadingSelectLang: "Pilih bahasa Anda:",
+    loadingStart: "Buka untuk Memulai",
 
   },
 };

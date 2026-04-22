@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { translations, TranslationKey } from '../translations';
 import {
   DEFAULT_LOADING_DURATION,
   LOADING_COMPLETE_DELAY,
@@ -28,9 +29,7 @@ interface LoadingScreenProps {
 
 // Simulate smooth loading progress that reaches 100%
 const getSimulatedProgress = (elapsedTime: number, duration: number): number => {
-  // Smooth curve that reaches 100% at the end of duration
   const ratio = Math.min(elapsedTime / duration, 1);
-  // Easing function for smooth progress
   const eased = 1 - Math.pow(1 - ratio, 3);
   return Math.min(eased * 100, 100);
 };
@@ -48,7 +47,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   const [progress, setProgress] = useState(0);
   const [showOptions, setShowOptions] = useState(false);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
+  const [screenLang, setScreenLang] = useState<'en' | 'id'>('en'); // Always start English
   const { setLanguage } = useLanguage();
+
+  // Local translation function that uses screenLang (not global language)
+  const lt = (key: TranslationKey): string => {
+    return translations[screenLang][key] || translations['en'][key] || key;
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -63,12 +68,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       return;
     }
 
-    let minDurationMet = false;
-    let windowLoaded = false;
     const startTime = Date.now();
 
     const completeLoading = () => {
-      setProgress(100); // Ensure progress is exactly 100%
+      setProgress(100);
       const finalTimer = setTimeout(() => {
         setIsVisible(false);
         if (onComplete) {
@@ -78,10 +81,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       return () => clearTimeout(finalTimer);
     };
 
-    // Ensure minimum duration - simplified logic
+    // Ensure minimum duration
     const minDurationTimer = setTimeout(() => {
-      minDurationMet = true;
-      completeLoading(); // Complete regardless of window load status
+      completeLoading();
     }, duration);
 
     // Update progress bar smoothly
@@ -203,7 +205,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             <div className="text-center space-y-12 max-w-2xl">
               {/* Primary Text */}
               <div className="space-y-6">
-                {['Welcome', 'to my', 'portfolio'].map((text, i) => (
+                {(['loadingWelcome1', 'loadingWelcome2', 'loadingWelcome3'] as const).map((key, i) => (
                   <motion.div
                     key={i}
                     custom={i}
@@ -211,9 +213,18 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                     initial="hidden"
                     animate="visible"
                   >
-                    <p className="text-4xl md:text-6xl lg:text-7xl font-Oswald tracking-tight text-black dark:text-white uppercase tracking-[0.1em]">
-                      {text}
-                    </p>
+                    <AnimatePresence mode="wait">
+                      <motion.p
+                        key={`${key}-${screenLang}`}
+                        initial={{ opacity: 0, y: 6, filter: 'blur(4px)' }}
+                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, y: -6, filter: 'blur(4px)' }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-4xl md:text-6xl lg:text-7xl font-Oswald tracking-tight text-black dark:text-white uppercase tracking-[0.1em]"
+                      >
+                        {lt(key)}
+                      </motion.p>
+                    </AnimatePresence>
                   </motion.div>
                 ))}
               </div>
@@ -232,9 +243,20 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
-                className="text-sm md:text-base text-black/50 dark:text-white/50 font-light tracking-wide uppercase"
+                className="text-sm md:text-base text-black/50 dark:text-white/50 font-light tracking-wide uppercase overflow-hidden"
               >
-                Crafting digital experiences with code and creativity
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={`subtitle-${screenLang}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="block"
+                  >
+                    {lt('loadingSubtitle')}
+                  </motion.span>
+                </AnimatePresence>
               </motion.p>
 
               {/* Start Button - always rendered to preserve layout, hidden via opacity when started */}
@@ -286,7 +308,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                             }}
                           />
                           <span className="relative z-10 flex items-center">
-                            Open to Start
+                            {lt('loadingStart')}
                             <motion.div
                               animate={{ x: [0, 5, 0] }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -324,12 +346,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                           }}
                           className="text-xs md:text-sm text-black/70 dark:text-white/70 font-light tracking-wide uppercase"
                         >
-                          Select your language:
+                          {lt('loadingSelectLang')}
                         </motion.p>
 
                         {/* Language Selection Container */}
                         <motion.div
-                          className="flex gap-6 justify-center items-center mt-4"
+                          className="flex gap-8 justify-center items-center mt-4"
                           initial={{ opacity: 0 }}
                           animate={{
                             opacity: 1,
@@ -343,11 +365,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                               setLanguage('en');
                               if (onStartWithoutMusic) onStartWithoutMusic();
                             }}
-                            onHoverStart={() => setHoveredIcon('en')}
-                            onHoverEnd={() => setHoveredIcon(null)}
-                            whileHover={{ scale: 1.15, y: -4 }}
-                            whileTap={{ scale: 0.9 }}
-                            initial={{ opacity: 0, x: -30, scale: 0.3, filter: 'blur(10px)' }}
+                            whileHover={{ scale: 1.08, y: -3 }}
+                            whileTap={{ scale: 0.92 }}
+                            initial={{ opacity: 0, x: -30, scale: 0.5, filter: 'blur(10px)' }}
                             animate={{
                               opacity: 1,
                               x: 0,
@@ -356,29 +376,39 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                               transition: {
                                 type: 'spring',
                                 stiffness: 300,
-                                damping: 22,
+                                damping: 24,
                                 delay: 0.25,
                               },
                             }}
-                            className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-lg group"
+                            className="lang-btn lang-btn-en"
                           >
-                            {/* Simple Hover Color Background with Liquid Fill Animation */}
-                            <div className="absolute inset-0 rounded-full bg-zinc-800 dark:bg-zinc-100 overflow-hidden">
-                              <div className="absolute inset-0 bg-indigo-900/80 dark:bg-indigo-200/80 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out rounded-full" />
-                            </div>
+                            {/* Soft glow halo */}
+                            <div className="lang-btn-glow" />
 
-                            {/* Icon Text */}
-                            <span className="relative z-10 text-white dark:text-black font-black text-xl tracking-wider">
-                              EN
-                            </span>
+                            {/* SVG dashed spinning ring */}
+                            <svg className="lang-btn-ring-svg" viewBox="0 0 70 70">
+                              <circle cx="35" cy="35" r="30" />
+                            </svg>
+
+                            {/* Breathe border */}
+                            <div className="lang-btn-breathe" />
+
+                            {/* Glass inner circle */}
+                            <div className="lang-btn-glass" />
+
+                            {/* Text */}
+                            <span className="lang-btn-text">EN</span>
+
+                            {/* Label */}
+                            <span className="lang-btn-label">English</span>
                           </motion.button>
 
-                          {/* Divider dot */}
+                          {/* Vertical Divider */}
                           <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
+                            initial={{ opacity: 0, scaleY: 0 }}
                             animate={{
-                              opacity: 0.3,
-                              scale: 1,
+                              opacity: 1,
+                              scaleY: 1,
                               transition: {
                                 type: 'spring',
                                 stiffness: 400,
@@ -386,21 +416,23 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                                 delay: 0.35,
                               },
                             }}
-                            className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"
+                            className="lang-divider"
                           />
 
                           {/* Indonesian Option */}
                           <motion.button
                             type="button"
                             onClick={() => {
+                              setScreenLang('id');
                               setLanguage('id');
-                              if (onStartWithoutMusic) onStartWithoutMusic();
+                              // Delay start so user sees the text transition to Indonesian
+                              setTimeout(() => {
+                                if (onStartWithoutMusic) onStartWithoutMusic();
+                              }, 800);
                             }}
-                            onHoverStart={() => setHoveredIcon('id')}
-                            onHoverEnd={() => setHoveredIcon(null)}
-                            whileHover={{ scale: 1.15, y: -4 }}
-                            whileTap={{ scale: 0.9 }}
-                            initial={{ opacity: 0, x: 30, scale: 0.3, filter: 'blur(10px)' }}
+                            whileHover={{ scale: 1.08, y: -3 }}
+                            whileTap={{ scale: 0.92 }}
+                            initial={{ opacity: 0, x: 30, scale: 0.5, filter: 'blur(10px)' }}
                             animate={{
                               opacity: 1,
                               x: 0,
@@ -409,21 +441,31 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                               transition: {
                                 type: 'spring',
                                 stiffness: 300,
-                                damping: 22,
+                                damping: 24,
                                 delay: 0.35,
                               },
                             }}
-                            className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-lg group"
+                            className="lang-btn lang-btn-id"
                           >
-                            {/* Simple Hover Color Background with Liquid Fill Animation */}
-                            <div className="absolute inset-0 rounded-full bg-zinc-800 dark:bg-zinc-100 overflow-hidden">
-                              <div className="absolute inset-0 bg-rose-900/80 dark:bg-rose-200/80 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out rounded-full" />
-                            </div>
+                            {/* Soft glow halo */}
+                            <div className="lang-btn-glow" />
 
-                            {/* Icon Text */}
-                            <span className="relative z-10 text-white dark:text-black font-black text-xl tracking-wider">
-                              ID
-                            </span>
+                            {/* SVG dashed spinning ring */}
+                            <svg className="lang-btn-ring-svg" viewBox="0 0 70 70">
+                              <circle cx="35" cy="35" r="30" />
+                            </svg>
+
+                            {/* Breathe border */}
+                            <div className="lang-btn-breathe" />
+
+                            {/* Glass inner circle */}
+                            <div className="lang-btn-glass" />
+
+                            {/* Text */}
+                            <span className="lang-btn-text">ID</span>
+
+                            {/* Label */}
+                            <span className="lang-btn-label">Indonesia</span>
                           </motion.button>
                         </motion.div>
                       </motion.div>

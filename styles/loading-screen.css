@@ -214,3 +214,216 @@
     bottom: 1rem;
   }
 }
+
+/* ===== Language Button — Refined Minimal ===== */
+
+@keyframes langBorderBreathe {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes langDashSpin {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -188.5; }
+}
+
+@keyframes langGlowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Base button */
+.lang-btn {
+  position: relative;
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  isolation: isolate;
+  --accent: rgba(255, 255, 255, 0.7);
+  --accent-glow: rgba(255, 255, 255, 0.15);
+  --accent-border: rgba(255, 255, 255, 0.4);
+  --accent-text: #ffffff;
+}
+
+/* Accent color themes — visible but refined */
+.lang-btn-en {
+  --accent: rgba(147, 197, 253, 0.85);
+  --accent-glow: rgba(147, 197, 253, 0.2);
+  --accent-border: rgba(147, 197, 253, 0.5);
+  --accent-text: #bfdbfe;
+}
+
+.lang-btn-id {
+  --accent: rgba(253, 164, 175, 0.85);
+  --accent-glow: rgba(253, 164, 175, 0.2);
+  --accent-border: rgba(253, 164, 175, 0.5);
+  --accent-text: #fecdd3;
+}
+
+/* Inner glass circle */
+.lang-btn-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.dark .lang-btn-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.lang-btn:hover .lang-btn-glass {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 25px var(--accent-glow), inset 0 0 15px var(--accent-glow);
+  background: rgba(0, 0, 0, 0.92);
+}
+
+.dark .lang-btn:hover .lang-btn-glass {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 25px var(--accent-glow), inset 0 0 15px var(--accent-glow);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Soft glow halo — appears on hover */
+.lang-btn-glow {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.lang-btn:hover .lang-btn-glow {
+  opacity: 1;
+  animation: langGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* SVG spinning dashed ring */
+.lang-btn-ring-svg {
+  position: absolute;
+  inset: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  pointer-events: none;
+}
+
+.lang-btn-ring-svg circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 7;
+  stroke-linecap: round;
+  animation: langDashSpin 10s linear infinite;
+  transition: stroke 0.4s ease, stroke-width 0.4s ease;
+}
+
+.dark .lang-btn-ring-svg circle {
+  stroke: rgba(255, 255, 255, 0.18);
+}
+
+.lang-btn:hover .lang-btn-ring-svg circle {
+  stroke: var(--accent);
+  stroke-width: 2;
+  animation-duration: 3s;
+}
+
+/* Subtle breathe border */
+.lang-btn-breathe {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: langBorderBreathe 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lang-btn:nth-child(3) .lang-btn-breathe {
+  animation-delay: -1.5s;
+}
+
+/* Button text */
+.lang-btn-text {
+  position: relative;
+  z-index: 10;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.9);
+  transition: letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.4s ease;
+}
+
+.dark .lang-btn-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lang-btn:hover .lang-btn-text {
+  letter-spacing: 0.28em;
+  color: var(--accent-text);
+}
+
+.dark .lang-btn:hover .lang-btn-text {
+  color: var(--accent-text);
+}
+
+/* Language label under button */
+.lang-btn-label {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+.dark .lang-btn-label {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.lang-btn:hover .lang-btn-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+  color: var(--accent);
+}
+
+/* Divider */
+.lang-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.2),
+    transparent
+  );
+}
+
+.dark .lang-divider {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+}
+

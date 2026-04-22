@@ -132,14 +132,12 @@ const Footer: React.FC = () => {
               viewport={{ once: false }}
             >
               {[
+                { href: 'https://www.linkedin.com/in/dafin-mu-tashim-277519308/', label: 'LinkedIn' },
+                { href: 'https://github.com/ap1ns', label: 'github' },
                 { href: 'https://www.instagram.com/_apins2/', label: 'Instagram' },
-                { href: 'https://tiktok.com/@_apins_/', label: 'TikTok' },
-                {
-                  href: 'https://www.linkedin.com/in/dafin-mu-tashim-277519308/',
-                  label: 'LinkedIn',
-                },
                 { href: 'https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE', label: 'YouTube' },
-                { href: 'https://id.quora.com/profile/Dafin-Mutashim', label: 'Qoura' },
+                { href: 'https://tiktok.com/@_apins_/', label: 'TikTok' },
+
               ].map((social) => (
                 <motion.li key={social.label} variants={linkVariants}>
                   <motion.a
