@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import SplitText from '../components/SplitText';
 import InteractiveStoryBlock from '../components/InteractiveStoryBlock';
 import { useTheme } from '../context/ThemeContext';
 import { useScrollVisibility } from '../hooks/useScrollAnimation';
@@ -153,7 +154,14 @@ const Experience: React.FC = () => {
           </div>
 
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-grotesk font-bold leading-[0.95] text-white mb-6">
-            {t('experienceTitle')}
+            <SplitText
+              text={t('experienceTitle')}
+              splitBy="word"
+              stagger={0.08}
+              delay={0.1}
+              duration={0.75}
+              margin="-80px"
+            />
           </h1>
 
           <p className="text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed font-light">
@@ -221,7 +229,14 @@ const Experience: React.FC = () => {
                 viewport={{ once: false }}
                 transition={{ duration: 0.6 }}
               >
-                {t('letsCreateRemarkable')}
+                <SplitText
+                  text={t('letsCreateRemarkable')}
+                  splitBy="word"
+                  stagger={0.07}
+                  delay={0.05}
+                  duration={0.65}
+                  margin="-40px"
+                />
               </motion.h2>
 
               <motion.p

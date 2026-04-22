@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Terminal } from 'lucide-react';
+import SplitText from '../components/SplitText';
 import { useTheme } from '../context/ThemeContext';
 import PageBackground from '../components/PageBackground';
 import StackingCardSwipe from '../components/StackingCardSwipe';
@@ -60,7 +61,14 @@ const Skills: React.FC = () => {
               <span className="text-[9px] md:text-[10px] font-black tracking-[0.5em] uppercase">{t('techStackV2')}</span>
             </div>
             <h2 className="text-5xl sm:text-7xl md:text-8xl font-display leading-[0.85] mb-4 md:mb-5 tracking-tighter uppercase text-white">
-              {t('coreCompetencies')}
+              <SplitText
+                text={t('coreCompetencies')}
+                splitBy="word"
+                stagger={0.08}
+                delay={0.1}
+                duration={0.7}
+                margin="-60px"
+              />
             </h2>
             <p className="text-zinc-400 text-base leading-relaxed max-w-2xl">
               {t('skillsCoreDesc')}

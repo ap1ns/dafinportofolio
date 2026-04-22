@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'framer-motion';
 import { GraduationCap, Award, BookOpen } from 'lucide-react';
+import SplitText from '../components/SplitText';
 import { useTheme } from '../context/ThemeContext';
 import { useScrollVisibility } from '../hooks/useScrollAnimation';
 import { EDUCATION_DATA } from '../data';
@@ -94,7 +95,14 @@ const About: React.FC = () => {
               variants={itemVariants}
               className="text-6xl md:text-8xl font-display mb-8 text-white"
             >
-              {t('aboutTitle2')}
+              <SplitText
+                text={t('aboutTitle2')}
+                splitBy="word"
+                stagger={0.07}
+                delay={0.15}
+                duration={0.7}
+                margin="-60px"
+              />
             </motion.h1>
             <motion.div
               variants={containerVariants}
@@ -187,7 +195,14 @@ const About: React.FC = () => {
               variants={itemVariants}
               className="text-4xl md:text-5xl font-display text-white"
             >
-              {t('academicJourney')}
+              <SplitText
+                text={t('academicJourney')}
+                splitBy="word"
+                stagger={0.09}
+                delay={0.1}
+                duration={0.65}
+                margin="-60px"
+              />
             </motion.h2>
           </motion.div>
 
