@@ -153,7 +153,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 backgroundUrl.toLowerCase().endsWith('.webm') ? (
                 <video
                   src={backgroundUrl}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-[1.5] md:scale-100"
                   autoPlay
                   muted
                   loop
@@ -163,7 +163,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 <img
                   src={backgroundUrl}
                   alt="Loading background"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-[1.5] md:scale-100"
                 />
               )}
               {/* Overlay to dim the media */}
