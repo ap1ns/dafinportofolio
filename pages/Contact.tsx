@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Mail, MessageSquare, Instagram, Github, Linkedin, Youtube } from 'lucide-react';
+import { Mail, MessageSquare, Instagram, Github, Linkedin, Youtube, ArrowUpRight } from 'lucide-react';
 import emailjs from 'emailjs-com';
 import { useTheme } from '../context/ThemeContext';
 import { useScrollVisibility } from '../hooks/useScrollAnimation';
@@ -168,28 +168,20 @@ const Contact: React.FC = () => {
         'hover:text-[#0077B5] hover:border-[#0077B5]/20 hover:bg-[#0077B5]/5 dark:hover:text-[#0077B5] dark:hover:border-[#0077B5]/30 dark:hover:bg-[#0077B5]/10',
     },
     {
-      icon: <Instagram size={20} />,
-      url: 'https://www.instagram.com/_apins2/',
-      label: 'Instagram',
-      color: '#a7243c',
-      hoverClass:
-        'hover:text-[#E4405F] hover:border-[#E4405F]/20 hover:bg-[#E4405F]/5 dark:hover:text-[#E4405F] dark:hover:border-[#E4405F]/30 dark:hover:bg-[#E4405F]/10',
-    },
-    {
-      icon: <Youtube size={20} />,
-      url: 'https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE',
-      label: 'YouTube',
-      color: '#FF0000',
-      hoverClass:
-        'hover:text-[#FF0000] hover:border-[#FF0000]/20 hover:bg-[#FF0000]/5 dark:hover:text-[#FF0000] dark:hover:border-[#FF0000]/30 dark:hover:bg-[#FF0000]/10',
-    },
-    {
       icon: <Github size={20} />,
       url: 'https://github.com/ap1ns',
       label: 'GitHub',
       color: '#333',
       hoverClass:
         'hover:text-[#333] dark:hover:text-white hover:border-[#333]/20 dark:hover:border-white/20 hover:bg-[#333]/5 dark:hover:bg-white/5',
+    },
+    {
+      icon: <Instagram size={20} />,
+      url: 'https://www.instagram.com/_apins/',
+      label: 'Instagram',
+      color: '#a7243c',
+      hoverClass:
+        'hover:text-[#E4405F] hover:border-[#E4405F]/20 hover:bg-[#E4405F]/5 dark:hover:text-[#E4405F] dark:hover:border-[#E4405F]/30 dark:hover:bg-[#E4405F]/10',
     },
   ];
 
@@ -270,22 +262,29 @@ const Contact: React.FC = () => {
               <motion.div
                 variants={itemVariants}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="flex items-center gap-6 p-6 rounded-3xl bg-zinc-50 dark:bg-zinc-900 group transition-all duration-300 cursor-pointer border border-transparent"
-                whileHover={{ scale: 1.05 }}
+                className="group relative flex items-center gap-5 md:gap-6 p-6 md:p-8 rounded-[2rem] bg-zinc-50/80 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/[0.05] hover:border-zinc-300 dark:hover:border-white/[0.1] transition-all duration-500 cursor-pointer overflow-hidden backdrop-blur-md shadow-sm hover:shadow-md"
+                whileHover={{ y: -4, scale: 1.02 }}
                 onClick={() => (window.location.href = 'mailto:dafinmutashim9@gmail.com')}
               >
+                {/* Background glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.02] dark:via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full duration-1000 ease-in-out" />
+                
                 <motion.div
-                  className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center shadow-sm text-black dark:text-white group-hover:text-gray-400 dark:group-hover:text-gray-400 transition-all duration-300 group-hover:scale-110 flex-shrink-0"
-                  whileHover={{ rotate: 10, scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-white/[0.04] flex items-center justify-center shadow-sm border border-zinc-100 dark:border-white/[0.05] text-zinc-600 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-500 flex-shrink-0 relative z-10"
+                  whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <Mail size={24} />
+                  <Mail size={24} strokeWidth={1.5} />
                 </motion.div>
-                <div className="min-w-0 max-w-xs">
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 transition-colors text-black dark:text-white">
-                    {t('emailMe')}
-                  </p>
-                  <p className="text-xl md:text-xl text-sm font-bold transition-colors text-black dark:text-white truncate">
+
+                <div className="relative z-10 flex-1 min-w-0 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
+                      {t('emailMe')}
+                    </p>
+                    <ArrowUpRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500" />
+                  </div>
+                  <p className="text-base md:text-xl font-medium text-zinc-800 dark:text-zinc-200 truncate transition-colors group-hover:text-black dark:group-hover:text-white">
                     dafinmutashim9@gmail.com
                   </p>
                 </div>
@@ -294,22 +293,26 @@ const Contact: React.FC = () => {
               <motion.div
                 variants={itemVariants}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="flex items-center gap-6 p-6 rounded-3xl bg-zinc-50 dark:bg-zinc-900 border border-transparent dark:border-zinc-800"
-                whileHover={{ scale: 1.05 }}
+                className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-5 md:gap-6 p-6 md:p-8 rounded-[2rem] bg-zinc-50/80 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/[0.05] hover:border-zinc-300 dark:hover:border-white/[0.1] transition-all duration-500 overflow-hidden backdrop-blur-md shadow-sm hover:shadow-md"
+                whileHover={{ y: -4, scale: 1.02 }}
               >
+                {/* Background glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.02] dark:via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full duration-1000 ease-in-out" />
+
                 <motion.div
-                  className="w-14 h-14 rounded-2xl bg-white dark:bg-white/20 flex items-center justify-center shadow-sm text-black dark:text-white backdrop-blur-md"
-                  whileHover={{ rotate: -10, scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-white/[0.04] flex items-center justify-center shadow-sm border border-zinc-100 dark:border-white/[0.05] text-zinc-600 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-500 flex-shrink-0 relative z-10"
+                  whileHover={{ rotate: [0, 10, -10, 5, 0], scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <MessageSquare size={24} />
+                  <MessageSquare size={24} strokeWidth={1.5} />
                 </motion.div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-50 mb-3 text-black dark:text-white">
+
+                <div className="relative z-10 flex-1 w-full flex flex-col justify-center">
+                  <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-3">
                     {t('directMessages')}
                   </p>
                   <motion.div
-                    className="flex gap-3"
+                    className="flex flex-wrap gap-3"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -320,9 +323,9 @@ const Contact: React.FC = () => {
                         key={i}
                         href={social.url}
                         variants={socialVariants}
-                        whileHover={{ y: -5, scale: 1.1 }}
+                        whileHover={{ y: -4, scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`p-3 bg-white dark:bg-white/20 border border-zinc-100 dark:border-white/20 rounded-xl text-zinc-400 dark:text-zinc-300 transition-all duration-300 backdrop-blur-md ${social.hoverClass}`}
+                        className={`flex items-center justify-center w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-white/[0.04] border border-zinc-200/80 dark:border-white/[0.05] rounded-xl text-zinc-500 dark:text-zinc-400 transition-all duration-300 shadow-sm hover:shadow-md ${social.hoverClass}`}
                         target="_blank"
                         rel="noreferrer"
                         title={social.label}
@@ -722,15 +725,19 @@ const Contact: React.FC = () => {
 
         {/* Quote Section */}
         <motion.div
-          className="w-full flex flex-col items-center justify-center text-center mt-32 mb-10 py-16 md:py-24 px-4 relative overflow-hidden border-t border-zinc-200 dark:border-zinc-800"
+          className="w-full flex flex-col items-center justify-center text-center mt-32 md:mt-48 mb-10 py-16 md:py-24 px-6 relative overflow-hidden border-t border-zinc-200/50 dark:border-zinc-800/50"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: '-50px' }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Decorative Background Element */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15rem] md:text-[25rem] font-serif text-black/[0.03] dark:text-white/[0.03] pointer-events-none select-none z-0 leading-none">
+            &rdquo;
+          </div>
 
           <motion.span
-            className="text-xs font-black tracking-[0.4em] text-zinc-500 uppercase mb-8"
+            className="text-[10px] md:text-xs font-black tracking-[0.4em] text-zinc-400 dark:text-zinc-500 uppercase mb-10 relative z-10"
             initial={{ opacity: 0, letterSpacing: '0em' }}
             whileInView={{ opacity: 1, letterSpacing: '0.4em' }}
             viewport={{ once: false }}
@@ -738,17 +745,25 @@ const Contact: React.FC = () => {
           >
             {t('closingThoughts')}
           </motion.span>
-          <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-inter text-black dark:text-white max-w-4xl leading-[1.2] tracking-tight relative z-10 font-medium" dangerouslySetInnerHTML={{ __html: t('quoteText') }} />
-
-          {/* Penambahan Nama Author */}
-          <motion.p
-            className="mt-8 text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-light tracking-widest relative z-10"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            — Dafin Mutashim
-          </motion.p>
+          
+          <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-inter text-zinc-800 dark:text-zinc-200 leading-[1.6] md:leading-[1.6] tracking-tight font-medium">
+              <span className="text-zinc-400 dark:text-zinc-600 font-serif mr-2">&ldquo;</span>
+              <span dangerouslySetInnerHTML={{ __html: t('quoteText') }} />
+              <span className="text-zinc-400 dark:text-zinc-600 font-serif ml-2">&rdquo;</span>
+            </h3>
+            
+            <div className="mt-12 w-12 h-[1px] bg-zinc-300 dark:bg-zinc-700" />
+            
+            <motion.p
+              className="mt-8 text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-medium tracking-[0.2em] uppercase"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            >
+              Dafin Mutashim
+            </motion.p>
+          </div>
         </motion.div>
       </div>
     </motion.div>

@@ -134,7 +134,7 @@ const Footer: React.FC = () => {
               {[
                 { href: 'https://www.linkedin.com/in/dafin-mu-tashim-277519308/', label: 'LinkedIn' },
                 { href: 'https://github.com/ap1ns', label: 'github' },
-                { href: 'https://www.instagram.com/_apins2/', label: 'Instagram' },
+                { href: 'https://www.instagram.com/_apins/', label: 'Instagram' },
                 { href: 'https://youtube.com/@tuanveles?si=3QY-ZQdMfi0yMAgE', label: 'YouTube' },
                 { href: 'https://tiktok.com/@_apins_/', label: 'TikTok' },
 

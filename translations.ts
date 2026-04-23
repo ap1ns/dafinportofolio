@@ -133,7 +133,7 @@ export const translations = {
     tellMeProject: "Tell me about your project.",
     contactFormLabel: "Contact form",
     closingThoughts: "Closing Thoughts",
-    quoteText: "\"Life is actually simple, it is our<span className=\"italic text-zinc-400 font-light\">pride and our own thoughts</span>  that make it complicated.\"",
+    quoteText: "Life is actually simple, it is our <span className=\"italic text-zinc-400 font-light\">pride and our own thoughts</span> that make it complicated.",
 
     techStackV2: "Tech Stack v2.0",
     coreCompetencies: "CORE COMPETENCIES",
@@ -366,7 +366,7 @@ export const translations = {
     tellMeProject: "Ceritakan proyek Anda kepada saya.",
     contactFormLabel: "Formulir Kontak",
     closingThoughts: "Catatan Penutup",
-    quoteText: "\"Hidup itu sebenarnya sederhana, <span className=\"italic text-zinc-400 font-light\">gengsi dan pikiran kita sendirilah</span> yang membuatnya rumit.\"",
+    quoteText: "Hidup itu sebenarnya sederhana, <span className=\"italic text-zinc-400 font-light\">gengsi dan pikiran kita sendirilah</span> yang membuatnya rumit.",
 
     techStackV2: "Keahlian Teknologi v2.0",
     coreCompetencies: "KOMPETENSI INTI",
